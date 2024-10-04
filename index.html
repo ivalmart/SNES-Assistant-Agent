@@ -1,17 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Change Monitor (File System Access API)</title>
+    <script>
+      let previousFileContent = null;
+      let fileHandle = null;
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="https://glitch.com/favicon.ico" />
-    <title>SNES Agent UI</title>
-    <link rel="stylesheet" href="/style.css" />
-    <script src="/script.js" defer></script>
+      // Check for changes in the file every second
+      async function monitorFile(fileHandle) {
+        let file = await fileHandle.getFile();
+        let contents = await file.text();
+        previousFileContent = contents;
+
+        setInterval(async () => {
+          let newFile = await fileHandle.getFile();
+          let newContents = await newFile.text();
+
+          if (newContents !== previousFileContent) {
+            console.log("File content has changed!");
+            previousFileContent = newContents;
+          } else {
+            console.log("No changes detected.");
+          }
+        }, 1000);
+      }
+
+      // Function to handle file selection and access permission
+      async function selectFile() {
+        try {
+          // Prompt the user to select a file (opens native file picker)
+          [fileHandle] = await window.showOpenFilePicker();
+          console.log(`Selected file: ${fileHandle.name}`);
+
+          // Start monitoring the file
+          monitorFile(fileHandle);
+        } catch (error) {
+          console.error("Error accessing file:", error);
+        }
+      }
+    </script>
   </head>
   <body>
-    The body of the webpage goes here. It will be really good content, I promise!
-    
-    
+    <h1>File Monitor (using File System Access API)</h1>
+
+    <button id="fileButton" onclick="selectFile()">
+      Select File to Monitor
+    </button>
+    <p>
+      Once a file is selected, this page will check for updates every second.
+    </p>
   </body>
 </html>
