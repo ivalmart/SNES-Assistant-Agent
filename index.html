@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>File Change Monitor (File System Access API)</title>
-    <!-- Super Nintendo Emulator -->
+  </head>
+  <body>
+    <h1>File Monitor (using File System Access API)</h1>
+
+    <button id="fileButton" onclick="selectFile()">
+      Select File to Monitor
+    </button>
+    <p>
+      Once a file is selected, this page will check for updates every second.
+    </p>
+    
+        <!-- Super Nintendo Emulator Script -->
     <div class="emscripten" id="status"></div>
     <div class="emscripten">
       <progress value="0" max="1" id="progress" hidden=""></progress>  
@@ -34,20 +45,16 @@
     <div class="emscripten" id="controls">
       Controls:<br>
       <br>
-      A button (OK in menu): X<br>
-      B button (Back in menu): Z<br>
-      X Button: S<br>
-      Y Button: A<br>
-      L Button: Q<br>
-      R Button: W<br>
+      A button (OK in menu): X || B button (Back in menu): Z<br>
+      X Button: S || Y Button: A<br>
+      L Button: Q || R Button: W<br><br>
+      
       D-pad: Arrow Keys<br>
-      Start Button: Enter<br>
-      Select Button: Shift<br>
+      Start Button: Enter || Select Button: Shift<br><br>
+      
       Toggle Menu: F1<br>
-      Fast forward: Spacebar (toggle)<br>
-      Slow motion: E (hold)<br>
-      Save state: F2<br>
-      Load state: F4
+      Fast forward: Spacebar (toggle) || Slow motion: E (hold)<br>
+      Save state: F2 || Load state: F4
     </div>
     <script type="text/javascript">
       var count = 0;
@@ -178,15 +185,6 @@
         }
       }
     </script>
-  </head>
-  <body>
-    <h1>File Monitor (using File System Access API)</h1>
-
-    <button id="fileButton" onclick="selectFile()">
-      Select File to Monitor
-    </button>
-    <p>
-      Once a file is selected, this page will check for updates every second.
-    </p>
+    <!-- End of Super Nintendo Emulator Script -->
   </body>
 </html>
