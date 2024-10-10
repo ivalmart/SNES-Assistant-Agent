@@ -8,9 +8,7 @@
   <body>
     <h1>File Monitor (using File System Access API)</h1>
 
-    <button id="fileButton" onclick="selectFile()">
-      Select File to Monitor
-    </button>
+
     <p>
       Once a file is selected, this page will check for updates every second.
     </p>
@@ -24,8 +22,11 @@
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     </div>
     <div class="emscripten emscripten_border" id="openrom">
+      <!-- SNES ROM button to load a game rom from the client's local file explorer -->
       <button id="fakerom" onclick="document.getElementById(&#39;rom&#39;).click()">Select a SNES ROM</button>
       <input style="display: none" type="file" id="rom" name="upload" onclick="document.getElementById(&#39;fakerom&#39;).click();" onchange="runEmulator(event.target.files);" multiple="">
+      <!-- File selection button for accesing a document that can access and update live edits -->
+      <button id="fileButton" onclick="selectFile()">Select File to Monitor</button>
     </div>
     <hr>
     <div class="emscripten">
@@ -36,7 +37,7 @@
       <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(document.getElementById(&#39;pointerLock&#39;).checked, 
                                                                                 document.getElementById(&#39;resize&#39;).checked)"><br>
       <input type="checkbox" id="vsync"><label for="vsync" id="vsync-label">Enable V-sync (can only be done before loading game)</label><br>
-      <input type="textbox" id="latency" size="3" maxlength="3" value="96"> <label for="latency" id="latency-label">Audio latency (ms) (increase if you hear pops at fullspeed, can only be done before loading game)</label>
+      <input type="textbox" id="latency" size="3" maxlength="3" value="120"> <label for="latency" id="latency-label">Audio latency (ms) (increase if you hear pops at fullspeed, can only be done before loading game)</label>
     </div>
     
     <hr>
