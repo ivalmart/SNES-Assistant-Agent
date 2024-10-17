@@ -11,11 +11,11 @@ export var map_area_offsets = {
 };
 
 function abstractify_pos(dv) {  
-  var x_radius = dv.getInt16(0x0afe);
-  var y_radius = dv.getInt16(0x0b00);
-  var x_center = dv.getInt16(0x0af6);
-  var y_center = dv.getInt16(0x0afa);
-  console.log([x_radius, y_radius, x_center, y_center]);
+  var x_radius = dv.getInt16(0x0afe, true);
+  var y_radius = dv.getInt16(0x0b00, true);
+  var x_center = dv.getInt16(0x0af6, true);
+  var y_center = dv.getInt16(0x0afa, true);
+  //console.log([x_radius, y_radius, x_center, y_center]);
   var top = (y_center - y_radius) / 16;
   var left = (x_center - y_radius) / 16;
   return [top, left];
@@ -33,8 +33,8 @@ export function abstractify_pos_global(dv, map_area_offsets) {
   // Room pos
   console.log("start");
   var room_pos = abstractify_pos(dv);
-  console.log(room_pos);
+  //console.log(room_pos);
   var pos = [area_pos[0] + map_pos[0] + room_pos[0], area_pos[1] + map_pos[1] + room_pos[1]]
-  console.log(pos);
+  //console.log(pos);
   return pos;
 }

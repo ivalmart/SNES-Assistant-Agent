@@ -29,12 +29,13 @@
       <p hidden id="goal">Goal</p>
     </main>
     <script type="module">
+      // Super Nintendo emulator import + Map Node Tools import
       import { emulateSnesConsole } from "./snes.mjs";
       import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
       
       // In game-coordinates
-      var player_x = 0;
-      var player_y = 0;
+      var player_x = 285;
+      var player_y = 562;
 
       window.onload = async function () {
         let response = await fetch(
@@ -247,8 +248,8 @@
            }).addTo(map);
 
            function update_pos() {
-              console.log([player_x, player_y]);
-              const loc = pos_to_loc(player_x, player_y);
+              console.log("update");
+              const loc = pos_to_loc([player_x, player_y]);
               player_marker.setLatLng(loc);
            }
            update_pos();
@@ -287,9 +288,9 @@
                 }
               );
            }
-           updatelines();
+           //updatelines();
            setInterval(update_pos, 200);
-           setInterval(updatelines, 1000);
+           //setInterval(updatelines, 1000);
     </script>
   </body>
 </html>
