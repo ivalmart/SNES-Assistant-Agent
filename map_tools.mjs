@@ -1,4 +1,4 @@
-var map_area_offsets = {
+export var map_area_offsets = {
 0: (3, 10),
 1: (0, 28),
 2: (31, 48),
@@ -31,5 +31,7 @@ export function abstractify_pos_global(dv, map_area_offsets) {
   var map_pos = (16 * map_x, 16 * map_y);
   // Room pos
   var room_pos = abstractify_pos(dv);
-  return (area_pos[0] + map_pos[0] + room_pos[0], area_pos[1] + map_pos[1] + room_pos[1]);
+  var pos = [area_pos[0] + map_pos[0] + room_pos[0], area_pos[1] + map_pos[1] + room_pos[1])]
+  console.log(pos);
+  return pos;
 }

@@ -30,6 +30,11 @@
     </main>
     <script type="module">
       import { emulateSnesConsole } from "./snes.mjs";
+      import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
+      
+      // In game-coordinates
+      var player_x = 0;
+      var player_y = 0;
 
       window.onload = async function () {
         let response = await fetch(
@@ -54,10 +59,13 @@
           );
           let g = dv.getUint8(0x0998);
           context.fillText("game state 0x" + g.toString(16), 8, 16);
+          // TODO: needs to also include other gamestates (such as actual gameplay)
           if (g == 0x2a) {
             let x = dv.getUint8(0x0b04);
             let y = dv.getUint8(0x0b06);
             context.strokeRect(x - 32, y - 32, 64, 64);
+            var coords = abstractify_pos_global(dv, map_area_offsets);
+            player_x = coords[0], player_y = coords[1];
           }
 
           // make up random inputs
@@ -66,8 +74,7 @@
 
         emulator.addEventListener("afterRun", afterRun);
       };
-    </script>
-    <script type="module">
+
            import all_rooms from "./all_rooms.json" with { type: "json" };
            import all_nodes from "./all_nodes.json" with { type: "json" };
 
@@ -239,16 +246,12 @@
            	radius: 0.2, color: `hsl(322, 50%, 50%)`,
            }).addTo(map);
 
-           function updatepos() {
-           	//import player_pos from "./player_pos.json" with { type: "json" };
-      const player_pos = fetch("./player_pos.json").then((response) => response.json())
-      .then((player_pos) => {
-        //console.log(player_pos);
-        const loc = pos_to_loc([player_pos["X"], player_pos["Y"]]);
-        player_marker.setLatLng(loc); }
-      );
+           function update_pos() {
+               console.log([player_x, player_y]);
+              const loc = pos_to_loc(player_x, player_y);
+              player_marker.setLatLng(loc);
            }
-           updatepos();
+           update_pos();
 
            // Track the plan
            var nlines = 20;
@@ -267,25 +270,25 @@
            }
 
            function updatelines() {
-      fetch("./lines.json").then((response) => response.json())
-      .then((new_lines) => {
-        // Remove the current lines
-        undrawLine(next_step_pline);
-        undrawLine(next_item_pline);
-        undrawLine(remaining_pline);
-        // Convert to pxy
-        const nps = pos_list_to_loc(new_lines["next_step"]);
-        const npi = pos_list_to_loc(new_lines["next_item"]);
-        const npr = pos_list_to_loc(new_lines["remaining_path"]);
-        // Add the new lines
-        next_step_pline = L.polyline(nps, {color: `hsla(56, 100%, 50%, 0.8)`}).addTo(map);
-        next_item_pline = L.polyline(npi, {color: `hsla(104, 100%, 50%, 0.8)`}).addTo(map);
-        remaining_pline = L.polyline(npr, {color: `hsla(0, 0%, 51%, 0.5)`}).addTo(map);
-        }
-      );
+              fetch("./lines.json").then((response) => response.json())
+              .then((new_lines) => {
+                // Remove the current lines
+                undrawLine(next_step_pline);
+                undrawLine(next_item_pline);
+                undrawLine(remaining_pline);
+                // Convert to pxy
+                const nps = pos_list_to_loc(new_lines["next_step"]);
+                const npi = pos_list_to_loc(new_lines["next_item"]);
+                const npr = pos_list_to_loc(new_lines["remaining_path"]);
+                // Add the new lines
+                next_step_pline = L.polyline(nps, {color: `hsla(56, 100%, 50%, 0.8)`}).addTo(map);
+                next_item_pline = L.polyline(npi, {color: `hsla(104, 100%, 50%, 0.8)`}).addTo(map);
+                remaining_pline = L.polyline(npr, {color: `hsla(0, 0%, 51%, 0.5)`}).addTo(map);
+                }
+              );
            }
            updatelines();
-           setInterval(updatepos, 200);
+           setInterval(update_pos, 200);
            setInterval(updatelines, 1000);
     </script>
   </body>
