@@ -18,7 +18,7 @@ function abstractify_pos(dv) {
   //console.log([x_radius, y_radius, x_center, y_center]);
   var top = (y_center - y_radius) / 16;
   var left = (x_center - y_radius) / 16;
-  return [top, left];
+  return [left, top];
 }
 
 export function abstractify_pos_global(dv, map_area_offsets) {
