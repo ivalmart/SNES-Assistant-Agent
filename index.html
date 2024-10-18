@@ -25,9 +25,8 @@
   <body>
     <main>
       <div id="container"></div>
-      <button>
-        press me
-      </button>
+      <div id="button_panel">buttons go here
+      </div>
       <div id="map" style="height: 1000px; background: #444"></div>
       <p hidden id="goal">Goal</p>
     </main>
@@ -56,6 +55,19 @@
         context.lineWidth = 2;
         context.fillStyle = "yellow";
         context.font = "16px monospace";
+        
+        for (let i = 0; i < 12; i++) {
+          const b = document.createElement("button");
+          b.innerHTML = i.toString();
+          button_panel.append(b);
+          const key = `0,1,0,${i}`;
+          b.addEventListener("mousedown", (e) => {
+            emulator.input_state[key] = 1;
+          });
+          b.addEventListener("mouseup", (e) => {
+            emulator.input_state[key] = 0;
+          });
+        }
 
         function afterRun() {
           let dv = new DataView(
