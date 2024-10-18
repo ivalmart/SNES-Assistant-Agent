@@ -25,6 +25,9 @@
   <body>
     <main>
       <div id="container"></div>
+      <button id="export">
+        
+      </button>
       <div id="button_panel">buttons go here
       </div>
       <div id="map" style="height: 1000px; background: #444"></div>
@@ -46,14 +49,14 @@
       // Loading in Super Metroid ROM
       window.onload = async function () {
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
-        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/example.state?v=1729281460335")
+        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/example.state?v=1729282120787")
         
         let emulator = emulateSnesConsole(
           romBytes,
+          stateBytes,
           document.querySelector("#container")
         );
-        emulator.retro.unserialize(stateBytes);
-
+        
         let context = emulator.canvas.getContext("2d");
         context.strokeStyle = "yellow";
         context.lineWidth = 2;
