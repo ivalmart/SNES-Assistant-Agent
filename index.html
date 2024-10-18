@@ -25,11 +25,8 @@
   <body>
     <main>
       <div id="container"></div>
-      <button id="export">
-        
-      </button>
-      <div id="button_panel">buttons go here
-      </div>
+      <button id="export_button">export current state</button>
+      <div id="button_panel">buttons go here</div>
       <div id="map" style="height: 1000px; background: #444"></div>
       <p hidden id="goal">Goal</p>
     </main>
@@ -45,24 +42,24 @@
         let response = await fetch(url);
         return new Uint8Array(await response.arrayBuffer());
       }
-      
+
       // Loading in Super Metroid ROM
       window.onload = async function () {
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
-        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/example.state?v=1729282120787")
-        
+        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/ceres.state?v=1729282536715")
+
         let emulator = emulateSnesConsole(
           romBytes,
           stateBytes,
           document.querySelector("#container")
         );
-        
+
         let context = emulator.canvas.getContext("2d");
         context.strokeStyle = "yellow";
         context.lineWidth = 2;
         context.fillStyle = "yellow";
         context.font = "16px monospace";
-        
+
         for (let i = 0; i < 12; i++) {
           const b = document.createElement("button");
           b.innerHTML = i.toString();
@@ -75,6 +72,18 @@
             emulator.input_state[key] = 0;
           });
         }
+
+        export_button.addEventListener("click", () => {
+          let buffer = emulator.retro.serialize();
+          const blob = new Blob([buffer], { type: 'application/octet-stream' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = 'example.state';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+        })
 
         function afterRun() {
           let dv = new DataView(
