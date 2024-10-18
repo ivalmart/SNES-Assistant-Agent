@@ -1,7 +1,7 @@
 import * as retro from "https://cdn.skypack.dev/pin/snes9x-next@v1.0.0-cli3XObByFqiqSouAHTv/mode=imports,min/optimized/snes9x-next.js";
 import * as thingpixel from "https://cdn.skypack.dev/pin/@thi.ng/pixel@v4.2.7-YzsdE4qjK7uUqur4AuyF/mode=imports,min/optimized/@thi.ng/pixel.js";
 
-export function emulateSnesConsole(romBytes, container) {
+export function emulateSnesConsole(romBytes, initialState, container) {
   const emulator = new EventTarget();
   emulator.retro = retro;
   const input_state = (emulator.input_state = {});
@@ -73,12 +73,10 @@ export function emulateSnesConsole(romBytes, container) {
   let running = true;
   let agent = null;
   let game = romBytes;
-  let initialState;
 
   retro.load_game(game);
 
-  /*
-        retro.unserialize(initialState);
+  retro.unserialize(initialState);
         */
 
   /*
