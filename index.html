@@ -25,6 +25,9 @@
   <body>
     <main>
       <div id="container"></div>
+      <button>
+        press me
+      </button>
       <div id="map" style="height: 1000px; background: #444"></div>
       <p hidden id="goal">Goal</p>
     </main>
@@ -34,13 +37,12 @@
       import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
 
       // In game-coordinates
-      var player_x = 285;
-      var player_y = 562;
+      let player = {x: 258, y: 562, marker: null};
 
       // Loading in Super Metroid ROM
       window.onload = async function () {
         let response = await fetch(
-          "https://cdn.glitch.global/6acefe06-c905-4b4e-9899-1373a2fe7184/metroid.sfc?v=1728680288564"
+          "https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153"
         );
         let romBytes = new Uint8Array(await response.arrayBuffer());
 
@@ -67,7 +69,7 @@
             let y = dv.getUint8(0x0b06);
             context.strokeRect(x - 32, y - 32, 64, 64);
             var coords = abstractify_pos_global(dv, map_area_offsets);
-            player_x = coords[0], player_y = coords[1];
+            player.x = coords[0], player.y = coords[1];
           }
 
           // make up random inputs
@@ -244,14 +246,14 @@
            // Track Player Position
            // Arbitrary
            const start_loc = pos_to_loc([285, 562]);
-           var player_marker = L.circle(start_loc, {
+           player.marker = L.circle(start_loc, {
            	radius: 0.2, color: `hsl(322, 50%, 50%)`,
            }).addTo(map);
 
            function update_pos() {
               console.log("update");
-              const loc = pos_to_loc([player_x, player_y]);
-              player_marker.setLatLng(loc);
+              const loc = pos_to_loc([player.x, player.y]);
+              player.marker.setLatLng(loc);
            }
            update_pos();
 
