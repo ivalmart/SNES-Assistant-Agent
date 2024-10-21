@@ -79,20 +79,19 @@
         context.font = "16px monospace";
 
         // Keyboard-to-Game Controller Input Handler
-        // A Button
         const input_buttons = [
-          { key: 'l', value: 'B'},
-          { key: 'k', value: 'Y'},
-          { key: 'Shift', value: 'Select'},
-          { key: 'Enter', value: 'Start'},
-          { key: 'w', value: 'Up'},
-          { key: 's', value: 'Down'},
-          { key: 'a', value: 'Left'},
-          { key: 'd', value: 'Right'},
-          { key: 'p', value: 'A'},
-          { key: 'o', value: 'X'},
-          { key: 'q', value: 'LeftTrigger'},
-          { key: 'e', value: 'RightTrigger'},
+          { key: 'l', value: 'B'},           // B button
+          { key: 'k', value: 'Y'},           // Y button
+          { key: 'Shift', value: 'Select'},  // Select button
+          { key: 'Enter', value: 'Start'},   // Start button
+          { key: 'w', value: 'Up'},          // Up button
+          { key: 's', value: 'Down'},        // Down button
+          { key: 'a', value: 'Left'},        // Left button
+          { key: 'd', value: 'Right'},       // Right button
+          { key: 'p', value: 'A'},           // A button
+          { key: 'o', value: 'X'},           // X button
+          { key: 'q', value: 'LeftTrigger'}, // Left bumper
+          { key: 'e', value: 'RightTrigger'},// Right bumper
         ]
 
         // Creates Input Button Handlers on Screen
@@ -110,17 +109,22 @@
             emulator.input_state[key] = 0;
           });
         }
-        
+
         // Creates Keyboard Inputs through the Window
+        function findInputIndex(k) {
+          return input_buttons.findIndex(button => button.key === k)
+        }
+
         window.addEventListener("keydown", (e) => {
           console.log(e.key in input_buttons);
-          if(e.key in input_buttons) {
+          if(inputKeyExists(e.key)) {
             console.log(" got this key! " + e.key);
           } else {
             console.log("this key isnt valid " + e.key);
           }
         })
 
+        // Creates a button to download the current game state onto local files
         export_button.addEventListener("click", () => {
           let buffer = emulator.retro.serialize();
           const blob = new Blob([buffer], { type: 'application/octet-stream' });
