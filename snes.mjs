@@ -30,7 +30,7 @@ export function emulateSnesConsole(romBytes, stateBytes, container) {
     //console.log('environment', environment_command_names[cmd], data);
     if (cmd == retro.ENVIRONMENT_GET_LOG_INTERFACE) {
       return function (level, msg) {
-        console.log("retro log", level, msg);
+        // console.log("retro log", level, msg);
       };
     } else {
       return true;

@@ -15,7 +15,6 @@ function abstractify_pos(dv) {
   const y_radius = dv.getInt16(0x0b00, true);
   const x_center = dv.getInt16(0x0af6, true);
   const y_center = dv.getInt16(0x0afa, true);
-  //console.log([x_radius, y_radius, x_center, y_center]);
   const top = (y_center - y_radius) / 16;
   const left = (x_center - y_radius) / 16;
   return [left, top];
@@ -31,10 +30,7 @@ export function abstractify_pos_global(dv, map_area_offsets) {
   const map_y = dv.getUint8(0x07A3);
   const map_pos = [16 * map_x, 16 * map_y];
   // Room pos
-  console.log("start");
   const room_pos = abstractify_pos(dv);
-  //console.log(room_pos);
   const pos = [area_pos[0] + map_pos[0] + room_pos[0], area_pos[1] + map_pos[1] + room_pos[1]]
-  //console.log(pos);
   return pos;
 }

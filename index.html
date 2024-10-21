@@ -146,7 +146,6 @@
           const keyState = `0,1,0,${index}`;
           // Checks to see if the key pressed down exists inside the keyboard inputs
           if(index != -1) {
-            console.log(keyState);
             emulator.input_state[keyState] = 1;
           }
         })
@@ -156,7 +155,6 @@
           const keyState = `0,1,0,${index}`;
           // Checks to see if the key released exists inside the keyboard inputs
           if(index != -1) {
-            console.log(keyState);
             emulator.input_state[keyState] = 0;
           }
         })
@@ -316,7 +314,7 @@
          `${node_name.replaceAll("_", " ")}`
         );
         circ.on('click', (event) => {
-           console.log(node_name);
+           // console.log(node_name);
            fetch(node_name); // Will Fail!
            document.getElementById("goal").innerHTML = node_name;
         });
@@ -337,7 +335,6 @@
       }).addTo(map);
 
       function update_pos() {
-        console.log("update");
         const loc = pos_to_loc([player.x, player.y]);
         player.marker.setLatLng(loc);
       }
