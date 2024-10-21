@@ -50,7 +50,7 @@
       // Super Nintendo emulator import + Map Node Tools import
       import { emulateSnesConsole } from "./snes.mjs";
       import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
-      
+
       // In game-coordinates for Samus
       let player = {x: 258, y: 562, marker: null};
 
@@ -78,7 +78,7 @@
         context.fillStyle = "yellow";
         context.font = "16px monospace";
 
-        // ----- Keyboard-to-Game Controller Input Handler -----
+        // ------- Keyboard-to-Game Controller Input Handler -------
         const input_buttons = [
           { key: 'l', value: 'B'},           // B button, 0
           { key: 'k', value: 'Y'},           // Y button, 1
@@ -134,7 +134,7 @@
             emulator.input_state[keyState] = 0;
           }
         })
-        // ----- End of Keyboard Input Handler -----
+        // ------- End of Keyboard Input Handler -------
 
         // Creates a button to download the current game state onto local files
         export_button.addEventListener("click", () => {
@@ -168,7 +168,7 @@
         emulator.addEventListener("afterRun", afterRun);
       };
 
-      // ----- Code for Super Metroid Map w/ Nodes -----
+      // ------- Code for Super Metroid Map w/ Nodes -------
       import all_rooms from "./all_rooms.json" with { type: "json" };
       import all_nodes from "./all_nodes.json" with { type: "json" };
 
@@ -227,145 +227,147 @@
         }
       ).addTo(map);
 
-     const area_names = {
-       0: "Crateria",
-       1: "Brinstar",
-       2: "Norfair",
-       3: "Wrecked Ship",
-       4: "Maridia",
-       5: "Tourian",
-       6: "Ceres",
-       7: "Debug",
-     };
+      const area_names = {
+        0: "Crateria",
+        1: "Brinstar",
+        2: "Norfair",
+        3: "Wrecked Ship",
+        4: "Maridia",
+        5: "Tourian",
+        6: "Ceres",
+        7: "Debug",
+      };
 
-     // Area offsets in map tiles
-     const area_offsets = {
-       0: [3, 10],
-       1: [0, 28],
-       2: [31, 48],
-       3: [37, 0],
-       4: [28, 28],
-       5: [0, 10],
-       // Out of bounds
-       6: [0, -10],
-       7: [0, 0],
-     };
-     const crateria2_offset = [7, 0];
-     const crateria2_rooms = [
-       "East_Ocean",
-       "Forgotten_Highway",
-       "Crab_Maze",
-       "Crateria_Power_Door",
-       "Crateria_Maridia_Shaft",
-     ];
+      // Area offsets in map tiles
+      const area_offsets = {
+        0: [3, 10],
+        1: [0, 28],
+        2: [31, 48],
+        3: [37, 0],
+        4: [28, 28],
+        5: [0, 10],
+        // Out of bounds
+        6: [0, -10],
+        7: [0, 0],
+      };
+      const crateria2_offset = [7, 0];
+      const crateria2_rooms = [
+        "East_Ocean",
+        "Forgotten_Highway",
+        "Crab_Maze",
+        "Crateria_Power_Door",
+        "Crateria_Maridia_Shaft",
+      ];
 
-     function mk_room_rect(room_name) {
-       const pixels_per_maptile = 256;
-       const room_info = all_rooms[room_name];
-       const r = room_info["Region"];
+      function mk_room_rect(room_name) {
+        const pixels_per_maptile = 256;
+        const room_info = all_rooms[room_name];
+        const r = room_info["Region"];
 
-       let rect_start_mt = room_info["Map_Pos"];
-       rect_start_mt = [
-         rect_start_mt[0] + area_offsets[r][0],
-         rect_start_mt[1] + area_offsets[r][1],
-       ];
-       if (crateria2_rooms.includes(room_name)) {
-         rect_start_mt[0] += crateria2_offset[0];
-         rect_start_mt[1] += crateria2_offset[1];
-       }
+        let rect_start_mt = room_info["Map_Pos"];
+        rect_start_mt = [
+          rect_start_mt[0] + area_offsets[r][0],
+          rect_start_mt[1] + area_offsets[r][1],
+        ];
+        if (crateria2_rooms.includes(room_name)) {
+          rect_start_mt[0] += crateria2_offset[0];
+          rect_start_mt[1] += crateria2_offset[1];
+        }
 
-       const start_pxy = [
-         rect_start_mt[0] * pixels_per_maptile,
-         rect_start_mt[1] * pixels_per_maptile,
-       ];
+        const start_pxy = [
+          rect_start_mt[0] * pixels_per_maptile,
+          rect_start_mt[1] * pixels_per_maptile,
+        ];
 
-       const end_pxy = [
-         start_pxy[0] + room_info["Extent"][0] * pixels_per_maptile,
-         start_pxy[1] + room_info["Extent"][1] * pixels_per_maptile,
-       ];
+        const end_pxy = [
+          start_pxy[0] + room_info["Extent"][0] * pixels_per_maptile,
+          start_pxy[1] + room_info["Extent"][1] * pixels_per_maptile,
+        ];
 
-       const rect = L.rectangle([pxy_to_loc(start_pxy), pxy_to_loc(end_pxy)], {
-         color: `hsl(${(360 * r) / 5}, 50%, 50%)`,
-       }).addTo(map);
+        const rect = L.rectangle([pxy_to_loc(start_pxy), pxy_to_loc(end_pxy)], {
+          color: `hsl(${(360 * r) / 5}, 50%, 50%)`,
+        }).addTo(map);
 
-       rect.bindTooltip(
-         `${room_name.replaceAll("_", " ")}, ${area_names[r]}`
-       );
+        rect.bindTooltip(
+          `${room_name.replaceAll("_", " ")}, ${area_names[r]}`
+        );
 
-       // rect.bindPopup(
-       //   `<img src="https://cdn.glitch.global/bd45ae5d-f912-438c-bc0b-3ee0a76d27c8/${room_name}.png" style="max-width: 256px; max-height: 256px;">`
-       // );
-       //rect.on('click', (event) => {
-       //  L.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
-       //
-       //  const rel_x = (event.containerPoint.x - event.target._pxBounds.min.x)/(event.target._pxBounds.max.x - event.target._pxBounds.min.x);
-       //  const rel_y = (event.containerPoint.y - event.target._pxBounds.min.y)/(event.target._pxBounds.max.y - event.target._pxBounds.min.y);
-         // todo: use room_info["Extent"] and such to get coordinates within the room
+        // rect.bindPopup(
+        //   `<img src="https://cdn.glitch.global/bd45ae5d-f912-438c-bc0b-3ee0a76d27c8/${room_name}.png" style="max-width: 256px; max-height: 256px;">`
+        // );
+        // rect.on('click', (event) => {
+        //   L.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
+        //
+        //   const rel_x = (event.containerPoint.x - event.target._pxBounds.min.x)/(event.target._pxBounds.max.x - event.target._pxBounds.min.x);
+        //   const rel_y = (event.containerPoint.y - event.target._pxBounds.min.y)/(event.target._pxBounds.max.y - event.target._pxBounds.min.y);
+        // todo: use room_info["Extent"] and such to get coordinates within the room
 
-         //
-         //const marker = L.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
-         //marker.bindTooltip(JSON.stringify({room_name, rel_x, rel_y}));
-       //});
-     }
+        //
+        //const marker = L.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
+        //marker.bindTooltip(JSON.stringify({room_name, rel_x, rel_y}));
+        //});
+      }
 
-     //Object.keys(all_rooms).forEach(mk_room_rect);
+      //Object.keys(all_rooms).forEach(mk_room_rect);
 
-     function mk_node_circ(node_name) {
-       const pos = all_nodes[node_name];
-       const loc = pos_to_loc(pos)
-       const circ = L.circle(loc, {
+      function mk_node_circ(node_name) {
+        const pos = all_nodes[node_name];
+        const loc = pos_to_loc(pos)
+        const circ = L.circle(loc, {
            radius: 0.2}).addTo(map);
-       //TODO: add click callback to write goal.json
-       circ.bindTooltip(
+        //TODO: add click callback to write goal.json
+        circ.bindTooltip(
          `${node_name.replaceAll("_", " ")}`
-       );
-       circ.on('click', (event) => {
+        );
+        circ.on('click', (event) => {
            console.log(node_name);
            fetch(node_name); // Will Fail!
            document.getElementById("goal").innerHTML = node_name;
-       });
+        });
 
-     }
-     Object.keys(all_nodes).forEach(mk_node_circ);
+      }
+      Object.keys(all_nodes).forEach(mk_node_circ);
 
 
-     function pos_to_loc(pos) {
-       return pxy_to_loc([pos[0] * 16, pos[1] * 16])
-     }
+      function pos_to_loc(pos) {
+        return pxy_to_loc([pos[0] * 16, pos[1] * 16])
+      }
 
-     // Track Player Position
-     // Arbitrary
-     const start_loc = pos_to_loc([285, 562]);
-     player.marker = L.circle(start_loc, {
-      radius: 0.2, color: `hsl(322, 50%, 50%)`,
-     }).addTo(map);
+      // Track Player Position
+      // Arbitrary
+      const start_loc = pos_to_loc([285, 562]);
+      player.marker = L.circle(start_loc, {
+        radius: 0.2, color: `hsl(322, 50%, 50%)`,
+      }).addTo(map);
 
-     function update_pos() {
+      function update_pos() {
         console.log("update");
         const loc = pos_to_loc([player.x, player.y]);
         player.marker.setLatLng(loc);
-     }
-     update_pos();
+      }
+      update_pos();
 
-     // Track the plan
-     var nlines = 20;
-     var next_step_pline;
-     var next_item_pline;
-     var remaining_pline;
+      // Track the plan
+      var nlines = 20;
+      var next_step_pline;
+      var next_item_pline;
+      var remaining_pline;
 
-     function undrawLine(line) {
-      if (line != null) {
-         line.removeFrom(map);
-}
-     }
+      function undrawLine(line) {
+        if (line != null) {
+          line.removeFrom(map);
+        }
+      }
 
-     function pos_list_to_loc(pos_list) {
-      return pos_list.map(pos_to_loc)
-     }
+      function pos_list_to_loc(pos_list) {
+        return pos_list.map(pos_to_loc)
+      }
+      
+      // ------- End of Room Node Map code -------
 
-     function updatelines() {
-        fetch("./lines.json").then((response) => response.json())
-        .then((new_lines) => {
+      // Code for visual lines showing next path to take, interconnected with BDD program
+      function updatelines() {
+        fetch("./lines.json").then((response) => response.json()).then((new_lines) => {
           // Remove the current lines
           undrawLine(next_step_pline);
           undrawLine(next_item_pline);
@@ -378,12 +380,11 @@
           next_step_pline = L.polyline(nps, {color: `hsla(56, 100%, 50%, 0.8)`}).addTo(map);
           next_item_pline = L.polyline(npi, {color: `hsla(104, 100%, 50%, 0.8)`}).addTo(map);
           remaining_pline = L.polyline(npr, {color: `hsla(0, 0%, 51%, 0.5)`}).addTo(map);
-          }
-        );
-     }
-     //updatelines();
-     setInterval(update_pos, 200);
-     //setInterval(updatelines, 1000);
+        });
+      }
+      //updatelines();
+      setInterval(update_pos, 200);
+      //setInterval(updatelines, 1000);
     </script>
   </body>
 </html>
