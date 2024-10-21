@@ -29,12 +29,18 @@
       <div id="container"></div>
       <button id="export_button">Export Current State</button>
       <!-- Keyboard Input Handler -->
-      <div id="input_handler">
-        <b><u>Controls:</u></b><br />
-        <b>Up:</b>-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-P-&nbsp;|<b>X:</b>-O-<br />
-        <b>Left:</b>-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
-        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b>-Q-<br />
-        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b>Right Trigger:</b>-E-<br />
+      <div id="button_input_handler">
+        <b><u>Controls:</u></b
+        ><br />
+        <b>Up:</b
+        >-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-P-&nbsp;|<b>X:</b>-O-<br />
+        <b>Left:</b
+        >-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
+        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b
+        >-Q-<br />
+        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b
+          >Right Trigger:</b
+        >-E-<br />
       </div>
       <p hidden id="goal">Goal</p>
       <!-- Super Metroid Node & Room Map -->
@@ -74,35 +80,39 @@
 
         // Keyboard-to-Game Controller Input Handler
         // A Button
-        const input_buttons = {
-          B: 'KeyL',
-          Y: 'KeyK',
-          Select: 'ShiftRight',
-          Start: 'Enter',
-          Up: 'KeyW',
-          Down: 'KeyS',
-          Left: 'KeyA',
-          Right: 'KeyD',
-          A: 'KeyP',
-          X: 'KeyO',
-          LeftTrigger: 'KeyQ',
-          RightTrigger: 'KeyE',
-        }
+        const input_buttons = [
+          { key: 'B', value:'KeyL'},
+          { key: 'Y', value:'KeyK'},
+          { key: 'Select', value:'ShiftRight'},
+          { key: 'Start', value:'Enter'},
+          { key: 'Up', value:'KeyW'},
+          { key: 'Down', value:'KeyS'},
+          { key: 'Left', value:'KeyA'},
+          { key: 'Right', value:'KeyD'},
+          { key: 'A', value:'KeyP'},
+          { key: 'X', value:'KeyP'},
+          { key: 'LeftTrigger', value:'KeyQ'},
+          { key: 'RightTrigger', value:'KeyE'},
+        ]
 
         // Creates Input Button Handlers
        for (let i = 0; i < 12; i++) {
           const button = document.createElement("button");
-         console.log(input_buttons[i].toString());
-          button.innerHTML = input_buttons[i].toString();
-          button_panel.append(button);
+          button.innerHTML = input_buttons[i].key.toString();
+          button_input_handler.append(button);
 
           const key = `0,1,0,${i}`;
+          // For buttons on screen
           button.addEventListener("mousedown", (e) => {
             emulator.input_state[key] = 1;
           });
           button.addEventListener("mouseup", (e) => {
             emulator.input_state[key] = 0;
           });
+          // For keyboard inputs
+          button.addEventListener("keydown", (e) => {
+            
+          })
         }
 
         export_button.addEventListener("click", () => {
