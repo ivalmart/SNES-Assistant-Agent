@@ -81,6 +81,19 @@
         // Keyboard-to-Game Controller Input Handler
         // A Button
         const input_buttons = [
+          { key: 'KeyL', value:'KeyL'},
+          { key: 'KeyK', value:'KeyK'},
+          { key: 'ShiftRight', value:'ShiftRight'},
+          { key: 'Start', value:'Enter'},
+          { key: 'Up', value:'KeyW'},
+          { key: 'Down', value:'KeyS'},
+          { key: 'Left', value:'KeyA'},
+          { key: 'Right', value:'KeyD'},
+          { key: 'A', value:'KeyP'},
+          { key: 'X', value:'KeyP'},
+          { key: 'LeftTrigger', value:'KeyQ'},
+          { key: 'RightTrigger', value:'KeyE'},
+          
           { key: 'B', value:'KeyL'},
           { key: 'Y', value:'KeyK'},
           { key: 'Select', value:'ShiftRight'},
@@ -95,7 +108,7 @@
           { key: 'RightTrigger', value:'KeyE'},
         ]
 
-        // Creates Input Button Handlers
+        // Creates Input Button Handlers on Screen
        for (let i = 0; i < 12; i++) {
           const button = document.createElement("button");
           button.innerHTML = input_buttons[i].key.toString();
@@ -109,11 +122,17 @@
           button.addEventListener("mouseup", (e) => {
             emulator.input_state[key] = 0;
           });
-          // For keyboard inputs
-          button.addEventListener("keydown", (e) => {
-            
-          })
         }
+        
+        // Creates Keyboard Inputs through the Window
+        window.addEventListener("keydown", (e) => {
+          console.log(e);
+          if(e.key in input_buttons) {
+            console.log(" got this key! " + e.key);
+          } else {
+            console.log("this key isnt valid " + e.key);
+          }
+        })
 
         export_button.addEventListener("click", () => {
           let buffer = emulator.retro.serialize();
