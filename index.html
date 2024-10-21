@@ -26,22 +26,23 @@
   <body>
     <main>
       <!-- Main Screen Container -->
-      <div id="container"></div>
-      <button id="export_button">Export Current State</button>
-      <!-- Keyboard Input Handler -->
-      <div id="button_input_handler">
-        <b><u>Controls:</u></b
-        ><br />
-        <b>Up:</b
-        >-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-P-&nbsp;|<b>X:</b>-O-<br />
-        <b>Left:</b
-        >-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
-        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b
-        >-Q-<br />
-        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b
-          >Right Trigger:</b
-        >-E-<br />
+      <div id="container">
+        <!-- Keyboard Input Handler -->
+        <div id="button_input_handler">
+          <b><u>Controls:</u></b
+          ><br />
+          <b>Up:</b
+          >-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-P-&nbsp;|<b>X:</b>-O-<br />
+          <b>Left:</b
+          >-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
+          <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b
+          >-Q-<br />
+          <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b
+            >Right Trigger:</b
+          >-E-<br />
+        </div>
       </div>
+      <button id="export_button">Export Current State</button>
       <p hidden id="goal">Goal</p>
       <!-- Super Metroid Node & Room Map -->
       <div id="map" style="height: 500px; width: 750px; background: #444"></div>
@@ -98,19 +99,18 @@
           let g = dv.getUint8(0x0998);
           context.fillText("game state 0x" + g.toString(16), 8, 16);
           // TODO: needs to also include other gamestates (such as actual gameplay)
-          if (g == 0x2a) {
+          // if (g == 0x2a) {
             let x = dv.getUint8(0x0b04);
             let y = dv.getUint8(0x0b06);
             context.strokeRect(x - 32, y - 32, 64, 64);
             var coords = abstractify_pos_global(dv, map_area_offsets);
             player.x = coords[0], player.y = coords[1];
-          }
+          // }
         }
 
         emulator.addEventListener("afterRun", afterRun);
-      };
-      
-              // ------- Keyboard-to-Game Controller Input Handler -------
+        
+        // ------- Keyboard-to-Game Controller Input Handler -------
         const input_buttons = [
           { key: 'l', value: 'B'},           // B button, 0
           { key: 'k', value: 'Y'},           // Y button, 1
@@ -167,7 +167,9 @@
           }
         })
         // ------- End of Keyboard Input Handler -------
-
+      };
+      
+      
       // ------- Code for Super Metroid Map w/ Nodes -------
       import all_rooms from "./all_rooms.json" with { type: "json" };
       import all_nodes from "./all_nodes.json" with { type: "json" };
