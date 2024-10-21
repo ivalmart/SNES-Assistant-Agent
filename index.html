@@ -26,25 +26,19 @@
   <body>
     <main>
       <!-- Main Screen Container -->
-      <div id="container">
-        <!-- Keyboard Input Handler -->
-        <div id="button_input_handler">
-          <b><u>Controls:</u></b
-          ><br />
-          <b>Up:</b
-          >-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-P-&nbsp;|<b>X:</b>-O-<br />
-          <b>Left:</b
-          >-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
-          <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b
-          >-Q-<br />
-          <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b
-            >Right Trigger:</b
-          >-E-<br />
-        </div>
-      </div>
+      <div id="container"></div>
+      <!-- Download Current Save State Button -->
       <button id="export_button">Export Current State</button>
-      <p hidden id="goal">Goal</p>
+      <!-- Keyboard Input Handler -->
+      <div id="button_input_handler">
+        <b><u>Controls:</u></b><br />
+        <b>Up:</b>-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-P-&nbsp;|<b>X:</b>-O-<br />
+        <b>Left:</b>-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
+        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b>-Q-<br />
+        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b>Right Trigger:</b>-E-<br />
+      </div>
       <!-- Super Metroid Node & Room Map -->
+      <p hidden id="goal">Goal</p>
       <div id="map" style="height: 500px; width: 750px; background: #444"></div>
     </main>
     <script type="module">
