@@ -81,37 +81,24 @@
         // Keyboard-to-Game Controller Input Handler
         // A Button
         const input_buttons = [
-          { key: 'KeyL', value:'KeyL'},
-          { key: 'KeyK', value:'KeyK'},
-          { key: 'ShiftRight', value:'ShiftRight'},
-          { key: 'Start', value:'Enter'},
-          { key: 'Up', value:'KeyW'},
-          { key: 'Down', value:'KeyS'},
-          { key: 'Left', value:'KeyA'},
-          { key: 'Right', value:'KeyD'},
-          { key: 'A', value:'KeyP'},
-          { key: 'X', value:'KeyP'},
-          { key: 'LeftTrigger', value:'KeyQ'},
-          { key: 'RightTrigger', value:'KeyE'},
-          
-          { key: 'B', value:'KeyL'},
-          { key: 'Y', value:'KeyK'},
-          { key: 'Select', value:'ShiftRight'},
-          { key: 'Start', value:'Enter'},
-          { key: 'Up', value:'KeyW'},
-          { key: 'Down', value:'KeyS'},
-          { key: 'Left', value:'KeyA'},
-          { key: 'Right', value:'KeyD'},
-          { key: 'A', value:'KeyP'},
-          { key: 'X', value:'KeyP'},
-          { key: 'LeftTrigger', value:'KeyQ'},
-          { key: 'RightTrigger', value:'KeyE'},
+          { key: 'l', value: 'B'},
+          { key: 'k', value: 'Y'},
+          { key: 'Shift', value: 'Select'},
+          { key: 'Enter', value: 'Start'},
+          { key: 'w', value: 'Up'},
+          { key: 's', value: 'Down'},
+          { key: 'a', value: 'Left'},
+          { key: 'd', value: 'Right'},
+          { key: 'p', value: 'A'},
+          { key: 'o', value: 'X'},
+          { key: 'q', value: 'LeftTrigger'},
+          { key: 'e', value: 'RightTrigger'},
         ]
 
         // Creates Input Button Handlers on Screen
        for (let i = 0; i < 12; i++) {
           const button = document.createElement("button");
-          button.innerHTML = input_buttons[i].key.toString();
+          button.innerHTML = input_buttons[i].value.toString();
           button_input_handler.append(button);
 
           const key = `0,1,0,${i}`;
@@ -126,7 +113,7 @@
         
         // Creates Keyboard Inputs through the Window
         window.addEventListener("keydown", (e) => {
-          console.log(e);
+          console.log(e.key in input_buttons);
           if(e.key in input_buttons) {
             console.log(" got this key! " + e.key);
           } else {
