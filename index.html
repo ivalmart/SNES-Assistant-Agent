@@ -63,7 +63,7 @@
         // Loading in Super Metroid ROM
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
         // Loading in Super Metroid Save State created from exporting withing the webpage
-        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/ceres.state?v=1729282536715")
+        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/ship.state?v=1729494763445")
 
         let emulator = emulateSnesConsole(
           romBytes,
@@ -78,7 +78,39 @@
         context.fillStyle = "yellow";
         context.font = "16px monospace";
 
-        // ------- Keyboard-to-Game Controller Input Handler -------
+        // Creates a button to download the current game state onto local files
+        export_button.addEventListener("click", () => {
+          let buffer = emulator.retro.serialize();
+          const blob = new Blob([buffer], { type: 'application/octet-stream' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = 'example.state';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+        })
+
+        function afterRun() {
+          let dv = new DataView(
+            emulator.retro.get_memory_data(2).slice(0, 0x2000).buffer
+          );
+          let g = dv.getUint8(0x0998);
+          context.fillText("game state 0x" + g.toString(16), 8, 16);
+          // TODO: needs to also include other gamestates (such as actual gameplay)
+          if (g == 0x2a) {
+            let x = dv.getUint8(0x0b04);
+            let y = dv.getUint8(0x0b06);
+            context.strokeRect(x - 32, y - 32, 64, 64);
+            var coords = abstractify_pos_global(dv, map_area_offsets);
+            player.x = coords[0], player.y = coords[1];
+          }
+        }
+
+        emulator.addEventListener("afterRun", afterRun);
+      };
+      
+              // ------- Keyboard-to-Game Controller Input Handler -------
         const input_buttons = [
           { key: 'l', value: 'B'},           // B button, 0
           { key: 'k', value: 'Y'},           // Y button, 1
@@ -135,38 +167,6 @@
           }
         })
         // ------- End of Keyboard Input Handler -------
-
-        // Creates a button to download the current game state onto local files
-        export_button.addEventListener("click", () => {
-          let buffer = emulator.retro.serialize();
-          const blob = new Blob([buffer], { type: 'application/octet-stream' });
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = 'example.state';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(link.href);
-        })
-
-        function afterRun() {
-          let dv = new DataView(
-            emulator.retro.get_memory_data(2).slice(0, 0x2000).buffer
-          );
-          let g = dv.getUint8(0x0998);
-          context.fillText("game state 0x" + g.toString(16), 8, 16);
-          // TODO: needs to also include other gamestates (such as actual gameplay)
-          if (g == 0x2a) {
-            let x = dv.getUint8(0x0b04);
-            let y = dv.getUint8(0x0b06);
-            context.strokeRect(x - 32, y - 32, 64, 64);
-            var coords = abstractify_pos_global(dv, map_area_offsets);
-            player.x = coords[0], player.y = coords[1];
-          }
-        }
-
-        emulator.addEventListener("afterRun", afterRun);
-      };
 
       // ------- Code for Super Metroid Map w/ Nodes -------
       import all_rooms from "./all_rooms.json" with { type: "json" };
