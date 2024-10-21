@@ -18,24 +18,27 @@
       }
     </style>
     <title>Super Metroid Maps</title>
+    
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
     <main>
+      <!-- Main Screen Container -->
       <div id="container"></div>
       <button id="export_button">export current state</button>
       <div id="button_panel">buttons go here</div>
-      <div id="map" style="height: 1000px; background: #444"></div>
       <p hidden id="goal">Goal</p>
+      <!-- Super Metroid Node & Room Map -->
+      <div id="map" style="height: 500px; width: 750px; background: #444"></div>
     </main>
     <script type="module">
       // Super Nintendo emulator import + Map Node Tools import
       import { emulateSnesConsole } from "./snes.mjs";
       import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
 
-      // In game-coordinates
+      // In game-coordinates for Samus
       let player = {x: 258, y: 562, marker: null};
 
       async function loadBinary(url) {
@@ -43,9 +46,10 @@
         return new Uint8Array(await response.arrayBuffer());
       }
 
-      // Loading in Super Metroid ROM
       window.onload = async function () {
+        // Loading in Super Metroid ROM
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
+        // Loading in Super Metroid Save State created from exporting withing the webpage        
         let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/ceres.state?v=1729282536715")
 
         let emulator = emulateSnesConsole(
@@ -54,6 +58,7 @@
           document.querySelector("#container")
         );
 
+        // Drawing on emulator space
         let context = emulator.canvas.getContext("2d");
         context.strokeStyle = "yellow";
         context.lineWidth = 2;
