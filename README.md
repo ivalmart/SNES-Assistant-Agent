@@ -4,7 +4,7 @@ Using this link currently to have smmaps and emulator run simultaneously
 https://snes-agent-ui.glitch.me/smmaps.html
 
 TODOs:
- - * Make an input handler so that you can control the emulator
+ - Make an input handler so that you can control the emulator
  - Transfer the Policy BDD to Javascript (Adam)
  - Convert the lua advice script at the start of MapPath2 - with the knowledge of where the player is trying to go, draw a line + other relevant info
  - Convert the "generate lines" part of MapPath2 (right before the big while loop) into javascript, and adapt the existing line drawing stuff to work with it instead of JSON data (requires a working policy)

@@ -27,8 +27,8 @@
     <main>
       <!-- Main Screen Container -->
       <div id="container"></div>
-      <button id="export_button">export current state</button>
-      <div id="button_panel">buttons go here</div>
+      <button id="export_button">Export Current State</button>
+      <div id="input_handler"><bold>Controls:</bold><br></div>
       <p hidden id="goal">Goal</p>
       <!-- Super Metroid Node & Room Map -->
       <div id="map" style="height: 500px; width: 750px; background: #444"></div>
@@ -65,15 +65,34 @@
         context.fillStyle = "yellow";
         context.font = "16px monospace";
 
+        // Keyboard-to-Game Controller Input Handler
+        // A Button
+        const input_buttons = {
+          B,
+          Y,
+          Select,
+          Start,
+          Up,
+          Down,
+          Left,
+          Right,
+          A,
+          X,
+          LeftTrigger,
+          RightTrigger,
+        }
+        
+        // Creates Input Button Handlers
         for (let i = 0; i < 12; i++) {
-          const b = document.createElement("button");
-          b.innerHTML = i.toString();
-          button_panel.append(b);
+          const button = document.createElement("button");
+          button.innerHTML = i.toString();
+          button_panel.append(button);
+          
           const key = `0,1,0,${i}`;
-          b.addEventListener("mousedown", (e) => {
+          button.addEventListener("mousedown", (e) => {
             emulator.input_state[key] = 1;
           });
-          b.addEventListener("mouseup", (e) => {
+          button.addEventListener("mouseup", (e) => {
             emulator.input_state[key] = 0;
           });
         }
