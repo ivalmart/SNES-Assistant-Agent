@@ -30,11 +30,11 @@
       <button id="export_button">Export Current State</button>
       <!-- Keyboard Input Handler -->
       <div id="input_handler">
-        <bold><u>Controls:</u></bold><br />
-        <bold>Up:</bold> W &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<bold>A:</bold> P &nbsp;| X: O<br />
-        <bold>Left:</bold> A &nbsp;&nbsp;&nbsp;&nbsp;|<bold>B:</bold> L &nbsp;| Y: K<br />
-        <bold>Down:</bold> S &nbsp;|<bold>Start:</bold> Enter<br />
-        <bold>Right:</bold> D &nbsp;|<bold>Select:</bold> R Shift<br />
+        <b><u>Controls:</u></b><br />
+        <b>Up:</b>-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-P-&nbsp;|<b>X:</b>-O-<br />
+        <b>Left:</b>-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
+        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b>-Q-<br />
+        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b>Right Trigger:</b>-E-<br />
       </div>
       <p hidden id="goal">Goal</p>
       <!-- Super Metroid Node & Room Map -->
@@ -75,24 +75,25 @@
         // Keyboard-to-Game Controller Input Handler
         // A Button
         const input_buttons = {
-          B,
-          Y,
-          Select,
-          Start,
-          Up,
-          Down,
-          Left,
-          Right,
-          A,
-          X,
-          LeftTrigger,
-          RightTrigger,
+          B: 'KeyL',
+          Y: 'KeyK',
+          Select: 'ShiftRight',
+          Start: 'Enter',
+          Up: 'KeyW',
+          Down: 'KeyS',
+          Left: 'KeyA',
+          Right: 'KeyD',
+          A: 'KeyP',
+          X: 'KeyO',
+          LeftTrigger: 'KeyQ',
+          RightTrigger: 'KeyE',
         }
 
         // Creates Input Button Handlers
-        for (let i = 0; i < 12; i++) {
+       for (let i = 0; i < 12; i++) {
           const button = document.createElement("button");
-          button.innerHTML = i.toString();
+         console.log(input_buttons[i].toString());
+          button.innerHTML = input_buttons[i].toString();
           button_panel.append(button);
 
           const key = `0,1,0,${i}`;
