@@ -80,18 +80,18 @@
 
         // Keyboard-to-Game Controller Input Handler
         const input_buttons = [
-          { key: 'l', value: 'B'},           // B button
-          { key: 'k', value: 'Y'},           // Y button
-          { key: 'Shift', value: 'Select'},  // Select button
-          { key: 'Enter', value: 'Start'},   // Start button
-          { key: 'w', value: 'Up'},          // Up button
-          { key: 's', value: 'Down'},        // Down button
-          { key: 'a', value: 'Left'},        // Left button
-          { key: 'd', value: 'Right'},       // Right button
-          { key: 'p', value: 'A'},           // A button
-          { key: 'o', value: 'X'},           // X button
-          { key: 'q', value: 'LeftTrigger'}, // Left bumper
-          { key: 'e', value: 'RightTrigger'},// Right bumper
+          { key: 'l', value: 'B'},           // B button, 0
+          { key: 'k', value: 'Y'},           // Y button, 1
+          { key: 'Shift', value: 'Select'},  // Select button, 2
+          { key: 'Enter', value: 'Start'},   // Start button, 3
+          { key: 'w', value: 'Up'},          // Up button, 4
+          { key: 's', value: 'Down'},        // Down button, 5
+          { key: 'a', value: 'Left'},        // Left button, 6
+          { key: 'd', value: 'Right'},       // Right button, 7
+          { key: 'p', value: 'A'},           // A button, 8
+          { key: 'o', value: 'X'},           // X button, 9
+          { key: 'q', value: 'LeftTrigger'}, // Left bumper, 10
+          { key: 'e', value: 'RightTrigger'},// Right bumper, 11
         ]
 
         // Creates Input Button Handlers on Screen
@@ -111,18 +111,20 @@
         }
 
         // Creates Keyboard Inputs through the Window
-        function findInputIndex(k) {
-          return input_buttons.findIndex(button => button.key === k)
+        function findInputIndex(key) {
+          return input_buttons.findIndex(button => button.key === key);
         }
 
         window.addEventListener("keydown", (e) => {
-          console.log(e.key in input_buttons);
-          if(inputKeyExists(e.key)) {
-            console.log(" got this key! " + e.key);
-          } else {
-            console.log("this key isnt valid " + e.key);
+          const index = findInputIndex(e.key);
+          const keyState = `0,1,0,${index}`;
+          // Checks to see if the key pressed down exists inside the keyboard inputs
+          if(index != -1) {
+            console.log(keyState);
+            emulator.input_state[keyState] = 1;
           }
         })
+        window.addEventList
 
         // Creates a button to download the current game state onto local files
         export_button.addEventListener("click", () => {
