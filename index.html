@@ -136,10 +136,12 @@
           });
         }
 
-        // Registers Keyboard Inputs through the Page Window
+        // Helper function
         function findInputIndex(key) {
           return input_buttons.findIndex(button => button.key === key);
         }
+        
+        // Registers keyboard Inputs through the Page Window
         // Connects keyboard inputs into emulator controls
         window.addEventListener("keydown", (e) => {
           const index = findInputIndex(e.key);
