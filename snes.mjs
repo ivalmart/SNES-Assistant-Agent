@@ -1,6 +1,7 @@
 import * as retro from "https://cdn.skypack.dev/pin/snes9x-next@v1.0.0-cli3XObByFqiqSouAHTv/mode=imports,min/optimized/snes9x-next.js";
 import * as thingpixel from "https://cdn.skypack.dev/pin/@thi.ng/pixel@v4.2.7-YzsdE4qjK7uUqur4AuyF/mode=imports,min/optimized/@thi.ng/pixel.js";
 
+// Super Nintendo Entertainment System code to run on webpage window
 export function emulateSnesConsole(romBytes, stateBytes, container) {
   const emulator = new EventTarget();
   emulator.retro = retro;
@@ -78,11 +79,11 @@ export function emulateSnesConsole(romBytes, stateBytes, container) {
     retro.unserialize(stateBytes);
   }
 
-  /*
-        let state = retro.serialize();
-        model.set("result", Array.from(state));
-        model.save_changes();
-        */
+/*
+  let state = retro.serialize();
+  model.set("result", Array.from(state));
+  model.save_changes();
+*/
 
   function tick() {
     if (running) {

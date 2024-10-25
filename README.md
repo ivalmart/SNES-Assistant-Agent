@@ -4,7 +4,7 @@ Using this link currently to have smmaps and emulator run simultaneously
 https://snes-agent-ui.glitch.me/smmaps.html
 
 TODOs:
- - Make an input handler so that you can control the emulator
+ - (DONE) Make an input handler so that you can control the emulator
  - Transfer the Policy BDD to Javascript (Adam)
  - Convert the lua advice script at the start of MapPath2 - with the knowledge of where the player is trying to go, draw a line + other relevant info
  - Convert the "generate lines" part of MapPath2 (right before the big while loop) into javascript, and adapt the existing line drawing stuff to work with it instead of JSON data (requires a working policy)
@@ -17,7 +17,8 @@ TODOs:
  https://github.com/matthewbauer/snes9x-next/blob/dffda6f1e44522bd1e1465a49c42e407c0c3db5d/libretro/libretro.c
  
  ```
- uint16_t snes_lut[] = { 
+Emulator input list registration 
+uint16_t snes_lut[] = { 
 SNES_B_MASK,
 SNES_Y_MASK,
 SNES_SELECT_MASK,
