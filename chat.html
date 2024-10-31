@@ -61,8 +61,14 @@
                     const duration = ((endTime - startTime) / 1000).toFixed(2);
                     
                     // Add the user's message and the model's response to chatHistory after the interaction
-                    chatHistory.push({ role: "user", parts: [{ text: message }] }, content: "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided.");
-                    chatHistory.push({ role: "model", parts: [{ text: fullResponse }] }, content: "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided.");
+                    chatHistory.push({
+                      role: "user",
+                      parts: [{ text: message }],
+                      content: "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided."})
+                    chatHistory.push({
+                      role: "model",
+                      parts: [{ text: fullResponse }],
+                      content: "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided."});
                     
                     let usage = (await result.response).usageMetadata;
                     console.log("Full result:", result);
