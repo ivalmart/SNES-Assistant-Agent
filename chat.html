@@ -82,8 +82,8 @@
       
         // created functions
         async function setPrompt() {
-            const message = "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided."
-            displayMessge("You2", message);
+          const message = "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided.";
+          displayMessage("System Prompt", message);
           try {
               const startTime = performance.now();
               const result = await chat.sendMessageStream(message);
@@ -108,9 +108,10 @@
               displayError("Error: " + error.message);
           }
         }
+        setPrompt();
       
         function get_player_state() {
-          return  {x: 0, y: 10, region: “Maridia”, energy: 5, missiles: 2}
+          return  {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
         }
 
         function displayMessage(sender, message) {

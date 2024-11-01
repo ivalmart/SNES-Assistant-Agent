@@ -42,7 +42,7 @@ export default function satisfyingSolutions(bdd, rootId, assumptions) {
         return sat ? 1n : 0n;
       case nodeId < 0:
         sat = !sat;
-        nodeId = -
+        nodeId = -nodeId;
       default:
         // nothing
     }
