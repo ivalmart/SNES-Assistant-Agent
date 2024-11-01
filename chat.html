@@ -114,42 +114,43 @@
 //           }
 //         }
         // setPrompt();
+      
         const getPlayerStateFunctionDeclaration = {
           name: "get_player_state",
           parameters: {
             type: "object",
             description: "Provides the state of the player that includes the current position, current map location, and the item stats that the player has such as health, missles, and more",
             properties: {
-              coordinates: {
-                type: "NUMBER",
-                descrpiption: "Positional coordinates on the x and y axis, being provided in the format of (x, y)",
-              },
+              // coordinates: {
+              //   type: "NUMBER",
+              //   descrpiption: "Positional coordinates on the x and y axis, being provided in the format of (x, y)",
+              // },
               roomLocation: {
                 type: "STRING",
                 description: "Player position based on the map connected to the player coordinates",
               },
-              statistics: {
-                type: "STRING",
-                description: "Player statistics that are relevant on screen such as health count, missles count, and more",
-              },
+              // statistics: {
+              //   type: "STRING",
+              //   description: "Player statistics that are relevant on screen such as health count, missles count, and more",
+              // },
             },
-            required: ["coordinates", "roomLocation", "statistics"],
+            required: ["roomLocation"],//"coordinates", "roomLocation", "statistics"],
           },
         }
         
         const functions = {
-          get_player_state: () => {
-            return get_player_state();
+          get_player_state: ({ roomLocation }) => {
+            return get_player_state("Maridia");
           }
         }
       
-        async function get_player_state() {
+        async function get_player_state(room) { //coords, room, stats) {
           console.log("I got called!");
           return {
-            coordinates: coords,
-            
-          }
-//          return {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
+            // coordinates: coords,
+            roomLocation: room,
+            // statistics: stats
+          };
         }
 
         function displayMessage(sender, message) {
