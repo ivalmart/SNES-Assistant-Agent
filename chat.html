@@ -43,6 +43,23 @@
           displayError("Failed to initialize chat: " + error.message);
         }
       }
+      
+      const machineState = {
+        
+      }
+
+      function getResultForAssistantFunctionCall(name, args) {
+        // todo: check which function is being called and do something with args
+        console.log({ functionCall: { name, args } });
+        if (name == "get_register") {
+          return machineState[args.register_name];
+        } else if (name == "set_register") {
+          machineState[args.register_name] = args.value;
+          return "ok"
+        } else {
+          return `Unknown function ${name}. Tell the user about this problem!`;
+        }
+      }
 
       async function sendMessage() {
         const userInput = document.getElementById("user-input");
@@ -74,11 +91,15 @@
                   message.push({
                     functionResponse: {
                       name: functionCall.name,
-                      response: "OK",
+                      response: {
+                        content: getResultForAssistantFunctionCall(
+                          functionCall.name,
+                          functionCall.args
+                        ),
+                      },
                     },
                   });
                 }
-                debugger;
                 shouldContinue = true;
               } else {
                 shouldContinue = false;
@@ -103,6 +124,40 @@
             },
             required: ["ignored"],
           },
+        },
+        
+        
+        
+        {
+          name: "get_register",
+          parameters: {
+            type: "object",
+            properties: {
+              register_name: {
+                type: "string",
+                description: "Name of the machine register, r0 to r31"
+              }
+            },
+            required: ["register_name"]
+          }
+        },
+        
+        {
+          name: "set_register",
+          parameters: {
+            type: "object",
+            properties: {
+              register_name: {
+                type: "string",
+                description: "Name of the machine register, r0 to r31"
+              },
+              value: {
+                type: "string",
+                description: "Name of the machine register, r0 to r31"
+              }
+            },
+            required: ["register_name"]
+          }
         },
       ];
 
