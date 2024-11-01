@@ -34,7 +34,7 @@
                 const model = await getGenerativeModel({
                   model: currentModel,
                   tools: {
-                    functionDeclarations: [get_player_state],
+                    functionDeclarations: [getPlayerStateFunctionDeclaration],
                   },
                 });
                 chat = model.startChat({
@@ -145,7 +145,11 @@
       
         async function get_player_state() {
           console.log("I got called!");
-          return {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
+          return {
+            coordinates: coords,
+            
+          }
+//          return {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
         }
 
         function displayMessage(sender, message) {
