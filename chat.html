@@ -56,7 +56,8 @@
             const result = await chat.sendMessageStream(message);
             let fullResponse = "";
             for await (const chunk of result.stream) {
-              console.log({ functionCalls: chunk.functionCalls() });
+              const functionCalls = chunk.functionCalls();
+              for 
               const chunkText = chunk.text();
               fullResponse += chunkText;
               updateModelResponse(fullResponse);
@@ -76,17 +77,17 @@
 
       const functionDeclarations = [
         {
-          name: "get_player_state",
+          name: "get_player_current_state",
           parameters: {
-            type: "OBJECT",
+            type: "object",
             properties: {
-              roomLocation: {
-                type: "STRING",
+              ignored: {
+                type: "string",
                 description:
-                  "Player position based on the map connected to the player coordinates",
+                  "leave this blank",
               },
             },
-            required: ["roomLocation"],
+            required: ["ignored"],
           },
         },
       ];
