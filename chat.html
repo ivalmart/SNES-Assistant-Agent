@@ -43,19 +43,25 @@
           displayError("Failed to initialize chat: " + error.message);
         }
       }
-      
-      const machineState = {
-        
-      }
+
+      const machineState = window.machineState = {
+        r0: 10,
+        r1: 20
+      };
 
       function getResultForAssistantFunctionCall(name, args) {
         // todo: check which function is being called and do something with args
-        console.log({ functionCall: { name, args } });
+        console.log({ name, args });
         if (name == "get_register") {
           return machineState[args.register_name];
         } else if (name == "set_register") {
           machineState[args.register_name] = args.value;
-          return "ok"
+          return "ok";
+        } else if (name == "add_registers") {
+          const a = machineState[args.source_register_a];
+          const b = machineState[args.source_register_b];
+          machineState[args.destination_register] = a + b;
+          return "ok";
         } else {
           return `Unknown function ${name}. Tell the user about this problem!`;
         }
@@ -78,7 +84,6 @@
               for await (const chunk of result.stream) {
                 const fcs = chunk.functionCalls();
                 if (fcs) {
-                  console.log({ fcs });
                   functionCalls.push(...fcs);
                 }
                 const chunkText = chunk.text();
@@ -88,14 +93,16 @@
               if (functionCalls.length > 0) {
                 message = [];
                 for (const functionCall of functionCalls) {
+                  const result = getResultForAssistantFunctionCall(
+                    functionCall.name,
+                    functionCall.args
+                  );
+                  console.log({ result });
                   message.push({
                     functionResponse: {
                       name: functionCall.name,
                       response: {
-                        content: getResultForAssistantFunctionCall(
-                          functionCall.name,
-                          functionCall.args
-                        ),
+                        content: result,
                       },
                     },
                   });
@@ -125,9 +132,6 @@
             required: ["ignored"],
           },
         },
-        
-        
-        
         {
           name: "get_register",
           parameters: {
@@ -135,13 +139,12 @@
             properties: {
               register_name: {
                 type: "string",
-                description: "Name of the machine register, r0 to r31"
-              }
+                description: "Name of the machine register, r0 to r31",
+              },
             },
-            required: ["register_name"]
-          }
+            required: ["register_name"],
+          },
         },
-        
         {
           name: "set_register",
           parameters: {
@@ -149,15 +152,42 @@
             properties: {
               register_name: {
                 type: "string",
-                description: "Name of the machine register, r0 to r31"
+                description: "Name of the machine register, r0 to r31",
               },
               value: {
-                type: "string",
-                description: "Name of the machine register, r0 to r31"
-              }
+                type: "number",
+                description:
+                  "numeric immediate to set this register's value to",
+              },
             },
-            required: ["register_name"]
-          }
+            required: ["register_name", "value"],
+          },
+        },
+        {
+          name: "add_registers",
+          parameters: {
+            type: "object",
+            properties: {
+              source_register_a: {
+                type: "string",
+                description: "Name of the machine register, r0 to r31",
+              },
+              source_register_b: {
+                type: "string",
+                description: "Name of the machine register, r0 to r31",
+              },
+
+              destination_register: {
+                type: "number",
+                description: "Name of the machine register, r0 to r31",
+              },
+            },
+            required: [
+              "source_register_a",
+              "source_register_b",
+              "destination_register",
+            ],
+          },
         },
       ];
 
