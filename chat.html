@@ -34,13 +34,8 @@
                 const model = await getGenerativeModel({
                   model: currentModel,
                   tools: {
-                    functionDeclarations: [
-                      {
-                      "name": "get_player_state",
-                      "description": "returns the state that the player is currently in that provides the position, the room, and their statistics"
-                      }
-                    ]
-                  }
+                    functionDeclarations: [get_player_state],
+                  },
                 });
                 chat = model.startChat({
                     history: chatHistory,
@@ -121,7 +116,8 @@
         // setPrompt();
       
         function get_player_state() {
-          return  {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
+          console.log("I got called!");
+          return {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
         }
 
         function displayMessage(sender, message) {
