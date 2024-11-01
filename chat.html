@@ -11,7 +11,10 @@
         let chat;
         let currentModel = "gemini-1.5-flash";
         let chatHistory = [];
-
+        let instructions = `
+          When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided.
+        `;
+      
         function getApiKey() {
             let apiKey = localStorage.getItem("GEMINI_API_KEY");
             if (!apiKey) {
@@ -33,9 +36,9 @@
             try {
                 const model = await getGenerativeModel({
                   model: currentModel,
-                  tools: {
-                    functionDeclarations: [getPlayerStateFunctionDeclaration],
-                  },
+                //   tools: {
+                //     functionDeclarations: [getPlayerStateFunctionDeclaration],
+                //   },
                 });
                 chat = model.startChat({
                     history: chatHistory,
@@ -69,11 +72,11 @@
                     chatHistory.push({
                       role: "user",
                       parts: [{ text: message }],
-                      content: "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided."})
+                      content: "You are a helpful chatbot."})
                     chatHistory.push({
                       role: "model",
                       parts: [{ text: fullResponse }],
-                      content: "You are a helpful chatbot. When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided."});
+                      content: "You are a helpful chatbot." + instructions });
                     
                     let usage = (await result.response).usageMetadata;
                     console.log("Full result:", result);
@@ -115,43 +118,43 @@
 //         }
         // setPrompt();
       
-        const getPlayerStateFunctionDeclaration = {
-          name: "get_player_state",
-          parameters: {
-            type: "object",
-            description: "Provides the state of the player that includes the current position, current map location, and the item stats that the player has such as health, missles, and more",
-            properties: {
-              // coordinates: {
-              //   type: "NUMBER",
-              //   descrpiption: "Positional coordinates on the x and y axis, being provided in the format of (x, y)",
-              // },
-              roomLocation: {
-                type: "STRING",
-                description: "Player position based on the map connected to the player coordinates",
-              },
-              // statistics: {
-              //   type: "STRING",
-              //   description: "Player statistics that are relevant on screen such as health count, missles count, and more",
-              // },
-            },
-            required: ["roomLocation"],//"coordinates", "roomLocation", "statistics"],
-          },
-        }
+//         const getPlayerStateFunctionDeclaration = {
+//           name: "get_player_state",
+//           parameters: {
+//             type: "object",
+//             description: "Provides the state of the player that includes the current position, current map location, and the item stats that the player has such as health, missles, and more",
+//             properties: {
+//               // coordinates: {
+//               //   type: "NUMBER",
+//               //   descrpiption: "Positional coordinates on the x and y axis, being provided in the format of (x, y)",
+//               // },
+//               roomLocation: {
+//                 type: "STRING",
+//                 description: "Player position based on the map connected to the player coordinates",
+//               },
+//               // statistics: {
+//               //   type: "STRING",
+//               //   description: "Player statistics that are relevant on screen such as health count, missles count, and more",
+//               // },
+//             },
+//             required: ["roomLocation"],//"coordinates", "roomLocation", "statistics"],
+//           },
+//         }
         
-        const functions = {
-          get_player_state: ({ roomLocation }) => {
-            return get_player_state("Maridia");
-          }
-        }
+//         const functions = {
+//           get_player_state: ({ roomLocation }) => {
+//             return get_player_state("Maridia");
+//           }
+//         }
       
-        async function get_player_state(room) { //coords, room, stats) {
-          console.log("I got called!");
-          return {
-            // coordinates: coords,
-            roomLocation: room,
-            // statistics: stats
-          };
-        }
+//         async function get_player_state(room) { //coords, room, stats) {
+//           console.log("I got called!");
+//           return {
+//             // coordinates: coords,
+//             roomLocation: room,
+//             // statistics: stats
+//           };
+//         }
 
         function displayMessage(sender, message) {
             const chatMessages = document.getElementById("chat-messages");
