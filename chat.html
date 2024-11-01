@@ -46,29 +46,44 @@
 
       async function sendMessage() {
         const userInput = document.getElementById("user-input");
-        const message = userInput.value.trim();
+        let message = userInput.value.trim();
         if (message) {
           displayMessage("You", message);
           userInput.value = "";
 
           try {
-            const startTime = performance.now();
-            const result = await chat.sendMessageStream(message);
-            let fullResponse = "";
-            for await (const chunk of result.stream) {
-              const functionCalls = chunk.functionCalls();
-              for 
-              const chunkText = chunk.text();
-              fullResponse += chunkText;
-              updateModelResponse(fullResponse);
-            }
-            const endTime = performance.now();
-            const duration = ((endTime - startTime) / 1000).toFixed(2);
+            let shouldContinue = true;
 
-            let usage = (await result.response).usageMetadata;
-            console.log("Full result:", result);
-            updateUsageMetadata(usage);
-            updateDuration(duration);
+            while (shouldContinue) {
+              const result = await chat.sendMessageStream(message);
+              let fullResponse = "";
+              const functionCalls = [];
+              for await (const chunk of result.stream) {
+                const fcs = chunk.functionCalls();
+                if (fcs) {
+                  console.log({ fcs });
+                  functionCalls.push(...fcs);
+                }
+                const chunkText = chunk.text();
+                fullResponse += chunkText;
+                updateModelResponse(fullResponse);
+              }
+              if (functionCalls.length > 0) {
+                message = [];
+                for (const functionCall of functionCalls) {
+                  message.push({
+                    functionResponse: {
+                      name: functionCall.name,
+                      response: "OK",
+                    },
+                  });
+                }
+                debugger;
+                shouldContinue = true;
+              } else {
+                shouldContinue = false;
+              }
+            }
           } catch (error) {
             displayError("Error: " + error.message);
           }
@@ -83,8 +98,7 @@
             properties: {
               ignored: {
                 type: "string",
-                description:
-                  "leave this blank",
+                description: "leave this blank",
               },
             },
             required: ["ignored"],
@@ -127,16 +141,6 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
 
-      function updateUsageMetadata(metadata) {
-        const usageMetadataElement = document.getElementById("usage-metadata");
-        usageMetadataElement.textContent = JSON.stringify(metadata, null, 2);
-      }
-
-      function updateDuration(duration) {
-        const durationElement = document.getElementById("api-duration");
-        durationElement.textContent = `Last API call duration: ${duration} seconds`;
-      }
-
       window.onload = () => {
         initChat();
         document
@@ -171,17 +175,6 @@
         width: 60px;
         padding: 5px;
       }
-      #usage-metadata {
-        white-space: pre-wrap;
-        font-family: monospace;
-        background-color: #f0f0f0;
-        padding: 10px;
-        margin-top: 10px;
-      }
-      #api-duration {
-        margin-top: 10px;
-        font-weight: bold;
-      }
     </style>
   </head>
   <body>
@@ -189,7 +182,5 @@
     <div id="chat-messages"></div>
     <input type="text" id="user-input" placeholder="Type your message..." />
     <button id="send-button">Send</button>
-    <div id="api-duration"></div>
-    <pre id="usage-metadata"></pre>
   </body>
 </html>
