@@ -133,11 +133,17 @@
                 description: "Player statistics that are relevant on screen such as health count, missles count, and more",
               },
             },
-            required: ["coordinates", "roomLocation", "statistics"]
+            required: ["coordinates", "roomLocation", "statistics"],
+          },
+        }
+        
+        const functions = {
+          get_player_state: () => {
+            return get_player_state();
           }
         }
       
-        function get_player_state() {
+        async function get_player_state() {
           console.log("I got called!");
           return {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
         }
