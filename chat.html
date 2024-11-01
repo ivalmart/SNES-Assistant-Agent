@@ -35,7 +35,7 @@
             model: currentModel,
             systemInstruction: instructions,
             tools: {
-              functionDeclarations: [getPlayerStateFunctionDeclaration],
+              functionDeclarations: functionDeclarations,
             },
           });
           chat = model.startChat({});
@@ -56,14 +56,14 @@
             const result = await chat.sendMessageStream(message);
             let fullResponse = "";
             for await (const chunk of result.stream) {
-              //console.log({chunk});
+              console.log({ functionCalls: chunk.functionCalls() });
               const chunkText = chunk.text();
               fullResponse += chunkText;
               updateModelResponse(fullResponse);
             }
             const endTime = performance.now();
             const duration = ((endTime - startTime) / 1000).toFixed(2);
-            
+
             let usage = (await result.response).usageMetadata;
             console.log("Full result:", result);
             updateUsageMetadata(usage);
@@ -74,43 +74,22 @@
         }
       }
 
-        const getPlayerStateFunctionDeclaration = {
+      const functionDeclarations = [
+        {
           name: "get_player_state",
           parameters: {
-            type: "object",
-            description: "Provides the state of the player that includes the current position, current map location, and the item stats that the player has such as health, missles, and more",
+            type: "OBJECT",
             properties: {
-              // coordinates: {
-              //   type: "NUMBER",
-              //   descrpiption: "Positional coordinates on the x and y axis, being provided in the format of (x, y)",
-              // },
               roomLocation: {
                 type: "STRING",
-                description: "Player position based on the map connected to the player coordinates",
+                description:
+                  "Player position based on the map connected to the player coordinates",
               },
-              // statistics: {
-              //   type: "STRING",
-              //   description: "Player statistics that are relevant on screen such as health count, missles count, and more",
-              // },
             },
-            required: ["roomLocation"],//"coordinates", "roomLocation", "statistics"],
+            required: ["roomLocation"],
           },
-        }
-
-        const functions = {
-          get_player_state: ({ roomLocation }) => {
-            return get_player_state("Maridia");
-          }
-        }
-
-        async function get_player_state(room) { //coords, room, stats) {
-          console.log("I got called!");
-          return {
-            // coordinates: coords,
-            roomLocation: room,
-            // statistics: stats
-          };
-        }
+        },
+      ];
 
       function displayMessage(sender, message) {
         const chatMessages = document.getElementById("chat-messages");
@@ -156,7 +135,6 @@
         const durationElement = document.getElementById("api-duration");
         durationElement.textContent = `Last API call duration: ${duration} seconds`;
       }
-
 
       window.onload = () => {
         initChat();
