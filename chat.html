@@ -31,7 +31,12 @@
 
         async function initChat() {
             try {
-                const model = await getGenerativeModel({ model: currentModel });
+                const model = await getGenerativeModel({
+                  model: currentModel,
+                  tools: {
+                    functionDeclarations: [get_player_state],
+                  }
+                });
                 chat = model.startChat({
                     history: chatHistory,
                 });
@@ -108,7 +113,7 @@
               displayError("Error: " + error.message);
           }
         }
-        setPrompt();
+        // setPrompt();
       
         function get_player_state() {
           return  {x: 0, y: 10, region: 'Maridia', energy: 5, missiles: 2};
