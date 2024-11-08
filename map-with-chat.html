@@ -114,9 +114,18 @@
             let instructions = `When the user asks you questions about the game Super Metroid, they are the player of the game.
             Use the tools provided to read and write the state of the ongoing game that the user can see in an emulator beside this chat interface.`;
 
-            //let ramMap = await (await fetch("RAMMap.txt")).text();
-            //instructions += "\n\n"+ramMap;
-
+            instructions += `
+            Memory addresses for useful game state:
+            7E:09C2 - 7E:09C3    Samus's health
+            7E:09C4 - 7E:09C5    Samus's max health
+            7E:09C6 - 7E:09C7    Samus's missiles
+            7E:09C8 - 7E:09C9    Samus's max missiles
+            7E:09CA - 7E:09CB    Samus's super missiles
+            7E:09CC - 7E:09CD    Samus's max super missiles
+            7E:09CE - 7E:09CF    Samus's power bombs
+            7E:09D0 - 7E:09D1    Samus's max power bombs
+            `;
+      
             // In game-coordinates for Samus
             let player = {
               x: 258,
@@ -161,11 +170,10 @@
                   safetySettings: [
                     {
                       category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                      threshold: HarmBlockThreshold.OFF,
+                      threshold: HarmBlockThreshold.BLOCK_NONE,
                     },
                   ]
                 });
-                debugger;
                 chat = model.startChat({});
               } catch (error) {
                 displayError("Failed to initialize chat: " + error.message);

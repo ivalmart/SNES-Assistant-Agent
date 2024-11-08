@@ -13,16 +13,34 @@
     }
   },
   {
+    "name": "ram_read_uint8",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "address":  {
+          "type": "string",
+          "description": "memory address with BANK:OFFSET format, e.g. 7E:12AB"
+        }
+      },
+      "required"
+      }
+    }
+  }
+  {
     "name": "get_player_status",
     "parameters": {
       "type": "object",
       "properties": {
-        "ignored": {
-          "type": "string",
-          "description": "leave this blank"
+        "energy": {
+          "type": "number",
+          "description": "current health/energy in the game"
+        },
+        "missiles": {
+          "type": "number",
+          "description": "current missile count in the game"
         }
       },
-      "required": ["ignored"]
+      "required": ["energy", "missiles"]
     }
   },
   {
