@@ -109,6 +109,9 @@
       let player = {x: 258, y: 562, marker: null};
       let current_player_room = "Brimstar";
       let player_stats = {energy: 99, missiles: 10}
+      
+      // Global
+      let dv;  // DataView
 
       // ---------- SCRIPT FOR GEMINI 1.5 PRO CHATBOT -----------
       function getApiKey() {
@@ -157,6 +160,8 @@
           return "They are here in " + current_player_room;
         } else if (name == "get_player_status") {
           console.log(player_stats);
+          player_stats.energy = dv.getUint8(0x09C2);
+          player_stats.missiles = dv.getUint8(0x09C6);
           return "Energy " + player_stats.energy + " / Missiles " + player_stats.missiles;
         } else if (name == "get_register") {
           return machineState[args.register_name];
@@ -400,19 +405,17 @@
         })
 
         function afterRun() {
-          let dv = new DataView(
+          dv = new DataView(
             emulator.retro.get_memory_data(2).slice(0, 0x2000).buffer
           );
           let g = dv.getUint8(0x0998);
           context.fillText("game state 0x" + g.toString(16), 8, 16);
-          // TODO: needs to also include other gamestates (such as actual gameplay)
-          // if (g == 0x2a) {
-            let x = dv.getUint8(0x0b04);
-            let y = dv.getUint8(0x0b06);
-            context.strokeRect(x - 32, y - 32, 64, 64);
-            var coords = abstractify_pos_global(dv, map_area_offsets);
-            player.x = coords[0], player.y = coords[1];
-          // }
+          // Setting Samus coordinates
+          let x = dv.getUint8(0x0b04);
+          let y = dv.getUint8(0x0b06);
+          context.strokeRect(x - 32, y - 32, 64, 64);
+          var coords = abstractify_pos_global(dv, map_area_offsets);
+          player.x = coords[0], player.y = coords[1];
         }
 
         emulator.addEventListener("afterRun", afterRun);
