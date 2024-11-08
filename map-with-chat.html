@@ -12,15 +12,83 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      #chat-messages {
+        height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      #user-input {
+        width: calc(100% - 140px);
+        padding: 5px;
+      }
+      #send-button {
+        width: 60px;
+        padding: 5px;
+      }
+    </style>
+    <style>
+      .leaflet-image-layer {
+        image-rendering: pixelated;
+      }
+    </style>
+    <title>Super Metroid Maps</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <main>
+      <!-- Main Screen Container -->
+      <div id="container"></div>
+      <!-- Download Current Save State Button -->
+      <button id="export_button">Export Current State</button>
+      <!-- Keyboard Input Handler -->
+      <div id="button_input_handler">
+        <b><u>Controls:</u></b><br />
+        <b>Up:</b>-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-Pz-&nbsp;|<b>X:</b>-O-<br />
+        <b>Left:</b>-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
+        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b>-Q-<br />
+        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b>Right Trigger:</b>-E-<br />
+      </div>
+      <!-- Gemini 1.5 Pro Chatbox -->
+      <h1>Gemini Chat App</h1>
+      <div id="chat-messages"></div>
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="send-button">Send</button><br><br><br>
+
+      <!-- Super Metroid Node & Room Map -->
+      <p hidden id="goal">Goal</p>
+      <div id="map" style="height: 500px; width: 750px; background: #444"></div>
+    </main>
+    
+    
     <script type="module">
-      // Gemini 1.5 Pro Script
+      // Super Nintendo emulator import + Map Node Tools imports
+      import { emulateSnesConsole } from "./snes.mjs";
+      import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
+      // Gemini 1.5 Pro Script imports
       import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
       import { marked } from "https://esm.run/marked";
-
+      
+      // Gemini 1.5 Chat Variables
       let chat;
       let currentModel = "gemini-1.5-flash";
       let instructions = `When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided.`;
 
+      // In game-coordinates for Samus
+      let player = {x: 258, y: 562, marker: null};
+      
+      // ---------- SCRIPT FOR GEMINI 1.5 PRO CHATBOT -----------
       function getApiKey() {
         let apiKey = localStorage.getItem("GEMINI_API_KEY");
         if (!apiKey) {
@@ -31,7 +99,7 @@
         }
         return apiKey;
       }
-
+      
       async function getGenerativeModel(params) {
         const API_KEY = getApiKey();
         const genAI = new GoogleGenerativeAI(API_KEY);
@@ -42,6 +110,7 @@
         try {
           const model = await getGenerativeModel({
             model: currentModel,
+            // Providing system prompt for specific SNES Super Metroid-based responses
             systemInstruction: instructions,
             tools: {
               functionDeclarations: functionDeclarations,
@@ -58,6 +127,7 @@
         r1: 20
       };
 
+      // 
       function getResultForAssistantFunctionCall(name, args) {
         // todo: check which function is being called and do something with args
         console.log({ name, args });
@@ -82,7 +152,6 @@
         if (message) {
           displayMessage("You", message);
           userInput.value = "";
-
           try {
             let shouldContinue = true;
 
@@ -127,6 +196,7 @@
         }
       }
 
+      // Main functions the assist bot will call for getting what's needed
       const functionDeclarations = [
         {
           name: "get_player_current_state",
@@ -200,6 +270,7 @@
         },
       ];
 
+      // Funcitons for Gemini 1.5 Pro chat messages
       function displayMessage(sender, message) {
         const chatMessages = document.getElementById("chat-messages");
         const messageElement = document.createElement("div");
@@ -246,67 +317,8 @@
             if (e.key === "Enter") sendMessage();
           });
       };
-    </script>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      #chat-messages {
-        height: 400px;
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-      #user-input {
-        width: calc(100% - 140px);
-        padding: 5px;
-      }
-      #send-button {
-        width: 60px;
-        padding: 5px;
-      }
-    </style>
-    <style>
-      .leaflet-image-layer {
-        image-rendering: pixelated;
-      }
-    </style>
-    <title>Super Metroid Maps</title>
 
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-  <body>
-    <main>
-      <!-- Main Screen Container -->
-      <div id="container"></div>
-      <!-- Download Current Save State Button -->
-      <button id="export_button">Export Current State</button>
-      <!-- Keyboard Input Handler -->
-      <div id="button_input_handler">
-        <b><u>Controls:</u></b><br />
-        <b>Up:</b>-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-Pz-&nbsp;|<b>X:</b>-O-<br />
-        <b>Left:</b>-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
-        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b>-Q-<br />
-        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b>Right Trigger:</b>-E-<br />
-      </div>
-      <!-- Super Metroid Node & Room Map -->
-      <p hidden id="goal">Goal</p>
-      <div id="map" style="height: 500px; width: 750px; background: #444"></div>
-    </main>
-    <script type="module">
-      // Super Nintendo emulator import + Map Node Tools import
-      import { emulateSnesConsole } from "./snes.mjs";
-      import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
-
-      // In game-coordinates for Samus
-      let player = {x: 258, y: 562, marker: null};
-
+      // ---------- SCRIPT FOR SUPER NINTENDO EMULATOR ----------      
       async function loadBinary(url) {
         let response = await fetch(url);
         return new Uint8Array(await response.arrayBuffer());
