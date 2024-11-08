@@ -192,6 +192,11 @@
               switch (name) {
                 case "get_player_current_room":
                   return "They are here in " + player.current_room;
+                  
+                case "ram_read_uint8":
+                  const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
+                  console.assert(bank == 0x7E)
+                  return dv.getUint8(offset);
 
                 case "get_player_status":
                   player.energy = dv.getUint8(0x09C2);

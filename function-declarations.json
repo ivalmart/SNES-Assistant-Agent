@@ -22,10 +22,9 @@
           "description": "memory address with BANK:OFFSET format, e.g. 7E:12AB"
         }
       },
-      "required"
-      }
+      "required": ["address"]
     }
-  }
+  },
   {
     "name": "get_player_status",
     "parameters": {
