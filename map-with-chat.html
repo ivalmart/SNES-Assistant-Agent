@@ -34,14 +34,15 @@
         width: 60px;
         padding: 5px;
       }
-      
+
       .main-div {
         max-width: 800px;
         padding: 5px;
         display: flex;
       }
-      
-      .col1, .col2 {
+
+      .col1,
+      .col2 {
         max-width: 400px;
         padding: 10px;
       }
@@ -58,7 +59,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <main>      
+    <main>
       <div class="main-div">
         <div class="col1">
           <!-- Main Emulator Screen Container -->
@@ -83,9 +84,13 @@
         <div class="col2">
           <!-- Gemini 1.5 Pro Chatbox -->
           <div id="chat-messages"></div>
-          <input type="text" id="user-input" placeholder="Type your message..." />
+          <input
+            type="text"
+            id="user-input"
+            placeholder="Type your message..."
+          />
           <button id="send-button">Send</button><br /><br /><br />
-        </div>        
+        </div>
       </div>
       <!-- Super Metroid Node & Room Map -->
       <p hidden id="goal">Goal</p>
@@ -100,7 +105,7 @@
       import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
       import { marked } from "https://esm.run/marked";
       // Other imports to make code cleaner
-      import { functionDeclarations } from "./function-declarations.mjs";
+      import functionDeclarations from "./function-declarations.json" with { "type": "json" }
 
       // Gemini 1.5 Chat Variables
       let chat;
@@ -114,10 +119,10 @@
         marker: null,
         energy: 0,
         missiles: 0,
-        current_room: "Brimstar"
+        current_room: "Brinstar"
       };
       // let player_stats = {energy: 0, missiles: 0}
-      
+
       // Global
       let dv;  // DataView
 
@@ -164,24 +169,30 @@
       function getResultForAssistantFunctionCall(name, args) {
         // todo: check which function is being called and do something with args
         console.log({ name, args });
-        if (name == "get_player_current_room") {
-          return "They are here in " + player.current_room;
-        } else if (name == "get_player_status") {
-          player.energy = dv.getUint8(0x09C2);
-          player.missiles = dv.getUint8(0x09C6);                   
-          return "Energy " + player.energy + " / Missiles " + player.missiles;
-        } else if (name == "get_register") {
-          return machineState[args.register_name];
-        } else if (name == "set_register") {
-          machineState[args.register_name] = args.value;
-          return "ok";
-        } else if (name == "add_registers") {
-          const a = machineState[args.source_register_a];
-          const b = machineState[args.source_register_b];
-          machineState[args.destination_register] = a + b;
-          return "ok";
-        } else {
-          return `Unknown function ${name}. Tell the user about this problem!`;
+        switch (name) {
+          case "get_player_current_room":
+            return "They are here in " + player.current_room;
+
+          case "get_player_status":
+            player.energy = dv.getUint8(0x09C2);
+            player.missiles = dv.getUint8(0x09C6);
+            return "Energy " + player.energy + " / Missiles " + player.missiles;
+
+          case "get_register":
+            return machineState[args.register_name];
+
+          case "set_register":
+            machineState[args.register_name] = args.value;
+            return "ok";
+
+          case "add_registers":
+            const a = machineState[args.source_register_a];
+            const b = machineState[args.source_register_b];
+            machineState[args.destination_register] = a + b;
+            return "ok";
+
+          default:
+            return `Unknown function ${name}. Tell the user about this problem!`;
         }
       }
 
@@ -214,6 +225,7 @@
                     functionCall.name,
                     functionCall.args
                   );
+                  displayMessage("Function Call", JSON.stringify(functionCall));
                   console.log({ result });
                   message.push({
                     functionResponse: {
