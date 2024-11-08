@@ -136,7 +136,9 @@
       function getResultForAssistantFunctionCall(name, args) {
         // todo: check which function is being called and do something with args
         console.log({ name, args });
-        if (name == "get_register") {
+        if (name == "get_player_current_room") {
+          return "They are here!";
+        } else if (name == "get_register") {
           return machineState[args.register_name];
         } else if (name == "set_register") {
           machineState[args.register_name] = args.value;
@@ -204,7 +206,7 @@
       // Main functions the assist bot will call for getting what's needed
       const functionDeclarations = [
         {
-          name: "get_player_current_state",
+          name: "get_player_current_room",
           parameters: {
             type: "object",
             properties: {
@@ -332,7 +334,7 @@
         // Loading in Super Metroid ROM
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
         // Loading in Super Metroid Save State created from exporting withing the webpage
-        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/morphball.state?v=1729818175820")
+        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/missles.state?v=1731035018526")
 
         let emulator = emulateSnesConsole(
           romBytes,
