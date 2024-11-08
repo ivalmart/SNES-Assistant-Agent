@@ -30,19 +30,19 @@ export const functionDeclarations = [
       required: ["energy", "missiles"],
     },
   },
-  // {
-  //   name: "set_missiles",
-  //   parameters: {
-  //     type: "object",
-  //     properties: {
-  //       new_missiles: {
-  //         type: "number",
-  //         description: "Changed number of missiles to a new number value",
-  //       },
-  //     },
-  //     required: ["new_missiles"],
-  //   },
-  // },
+  {
+    name: "set_health",
+    parameters: {
+      type: "object",
+      properties: {
+        new_health: {
+          type: "health",
+          description: "Changed health value or energy value to a new number value",
+        },
+      },
+      required: ["new_health"],
+    },
+  },
   {
     name: "get_register",
     parameters: {
