@@ -107,12 +107,16 @@
       // Other imports to make code cleaner
       import functionDeclarations from "./function-declarations.json" with { "type": "json" }
 
+      
       // Gemini 1.5 Chat Variables
       let chat;
       let currentModel = "gemini-1.5-flash";
       let instructions = `When the user asks you questions about the game Super Metroid, they are the player of the game.
       Use the tools provided to read and write the state of the ongoing game that the user can see in an emulator beside this chat interface.`;
 
+      //let ramMap = await (await fetch("RAMMap.txt")).text();
+      //instructions += "\n\n"+ramMap;
+      
       // In game-coordinates for Samus
       let player = {
         x: 258,
@@ -413,6 +417,22 @@
         // ------- End of Keyboard Input Handler -------
       };
 
+
+private val dangerousContent = SafetySetting(HarmCategory.DANGEROUS_CONTENT, BlockThreshold.NONE)
+    private val sexuallyExplicit = SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, BlockThreshold.NONE)
+    private val hateSpeech = SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.NONE)
+    private val harassment = SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.NONE)
+
+    private val config = generationConfig {
+        temperature = 0.8f
+    }
+
+    private val generativeModel = GenerativeModel(
+        modelName = "gemini-1.0-pro",
+        apiKey = YOUR_API_KEY,
+        generationConfig = config,
+        safetySettings = listOf(dangerousContent, sexuallyExplicit, hateSpeech, harassment)
+    )
 
       // ------- Code for Super Metroid Map w/ Node-Rooms -------
       import all_rooms from "./all_rooms.json" with { type: "json" };
