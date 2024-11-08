@@ -17,16 +17,12 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "energy": {
-          "type": "number",
-          "description": "current health/energy in the game"
-        },
-        "missiles": {
-          "type": "number",
-          "description": "current missile count in the game"
+        "ignored": {
+          "type": "string",
+          "description": "leave this blank"
         }
       },
-      "required": ["energy", "missiles"]
+      "required": ["ignored"]
     }
   },
   {
