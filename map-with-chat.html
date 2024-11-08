@@ -34,6 +34,20 @@
         width: 60px;
         padding: 5px;
       }
+      
+      .main-div {
+        max-width: 600px;
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      
+      .emulator {
+        max-width: 250px;
+        padding: 10px;
+      }
     </style>
     <style>
       .leaflet-image-layer {
@@ -48,10 +62,6 @@
   </head>
   <body>
     <main>
-      <!-- Main Screen Container -->
-      <div id="container"></div>
-      <!-- Download Current Save State Button -->
-      <button id="export_button">Export Current State</button>
       <!-- Keyboard Input Handler -->
       <div id="button_input_handler">
         <b><u>Controls:</u></b
@@ -66,11 +76,19 @@
           >Right Trigger:</b
         >-E-<br />
       </div>
-      <!-- Gemini 1.5 Pro Chatbox -->
-      <h1>Gemini Chat App</h1>
-      <div id="chat-messages"></div>
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="send-button">Send</button><br /><br /><br />
+      <div class="main-div">
+        <!-- Main Emulator Screen Container -->
+        <div class="emulator" id="container">
+          <!-- Download Current Save State Button -->
+          <button id="export_button">Export Current State</button>
+        </div>
+
+        <!-- Gemini 1.5 Pro Chatbox -->
+        <div id="chat-messages">
+          <input type="text" id="user-input" placeholder="Type your message..." />
+          <button id="send-button">Send</button><br /><br /><br />        
+        </div>
+      </div>
 
       <!-- Super Metroid Node & Room Map -->
       <p hidden id="goal">Goal</p>
@@ -616,7 +634,8 @@
       function update_pos() {
         const loc = pos_to_loc([player.x, player.y]);
         player.marker.setLatLng(loc);
-        current_player_room = 
+        // current_player_room = 
+      }
       update_pos();
 
       // Track the plan
@@ -655,7 +674,7 @@
         });
       }
       //updatelines();
-      setInterval(update_pos, 200);
+      setInterval(update_pos, 100);
       //setInterval(updatelines, 1000);
     </script>
   </body>
