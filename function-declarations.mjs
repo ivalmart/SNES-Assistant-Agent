@@ -30,7 +30,7 @@ export const functionDeclarations = [
       required: ["energy", "missiles"],
     },
   },
-  // {
+  // { GETTING ERROR OF SAFETY PROTOCOLS
   //   name: "set_health",
   //   parameters: {
   //     type: "object",
