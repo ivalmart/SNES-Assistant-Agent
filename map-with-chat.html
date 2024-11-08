@@ -107,7 +107,7 @@
 
       // In game-coordinates for Samus
       let player = {x: 258, y: 562, marker: null};
-      let current_player_room = "";
+      let current_player_room = "Brimstar";
 
       // ---------- SCRIPT FOR GEMINI 1.5 PRO CHATBOT -----------
       function getApiKey() {
@@ -153,7 +153,7 @@
         // todo: check which function is being called and do something with args
         console.log({ name, args });
         if (name == "get_player_current_room") {
-          return "They are here!";
+          return "They are here in " + current_player_room;
         } else if (name == "get_register") {
           return machineState[args.register_name];
         } else if (name == "set_register") {
