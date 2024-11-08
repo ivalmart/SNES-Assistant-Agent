@@ -54,24 +54,29 @@
       <button id="export_button">Export Current State</button>
       <!-- Keyboard Input Handler -->
       <div id="button_input_handler">
-        <b><u>Controls:</u></b><br />
-        <b>Up:</b>-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-Pz-&nbsp;|<b>X:</b>-O-<br />
-        <b>Left:</b>-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
-        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b>-Q-<br />
-        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b>Right Trigger:</b>-E-<br />
+        <b><u>Controls:</u></b
+        ><br />
+        <b>Up:</b
+        >-W-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<b>A:</b>-Pz-&nbsp;|<b>X:</b>-O-<br />
+        <b>Left:</b
+        >-A-&nbsp;&nbsp;&nbsp;&nbsp;|<b>B:</b>-L-&nbsp;|<b>Y:</b>-K-<br />
+        <b>Down:</b>-S-&nbsp;|<b>Start:</b>-Enter-&nbsp;|<b>Left Trigger:</b
+        >-Q-<br />
+        <b>Right:</b>-D-&nbsp;|<b>Select:</b>-R Shift-&nbsp;|<b
+          >Right Trigger:</b
+        >-E-<br />
       </div>
       <!-- Gemini 1.5 Pro Chatbox -->
       <h1>Gemini Chat App</h1>
       <div id="chat-messages"></div>
       <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="send-button">Send</button><br><br><br>
+      <button id="send-button">Send</button><br /><br /><br />
 
       <!-- Super Metroid Node & Room Map -->
       <p hidden id="goal">Goal</p>
       <div id="map" style="height: 500px; width: 750px; background: #444"></div>
     </main>
-    
-    
+
     <script type="module">
       // Super Nintendo emulator import + Map Node Tools imports
       import { emulateSnesConsole } from "./snes.mjs";
@@ -79,7 +84,7 @@
       // Gemini 1.5 Pro Script imports
       import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
       import { marked } from "https://esm.run/marked";
-      
+
       // Gemini 1.5 Chat Variables
       let chat;
       let currentModel = "gemini-1.5-flash";
@@ -87,7 +92,7 @@
 
       // In game-coordinates for Samus
       let player = {x: 258, y: 562, marker: null};
-      
+
       // ---------- SCRIPT FOR GEMINI 1.5 PRO CHATBOT -----------
       function getApiKey() {
         let apiKey = localStorage.getItem("GEMINI_API_KEY");
@@ -99,7 +104,7 @@
         }
         return apiKey;
       }
-      
+
       async function getGenerativeModel(params) {
         const API_KEY = getApiKey();
         const genAI = new GoogleGenerativeAI(API_KEY);
@@ -127,7 +132,7 @@
         r1: 20
       };
 
-      // 
+      //
       function getResultForAssistantFunctionCall(name, args) {
         // todo: check which function is being called and do something with args
         console.log({ name, args });
@@ -306,7 +311,7 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
 
-      // ---------- SCRIPT FOR SUPER NINTENDO EMULATOR ----------      
+      // ---------- SCRIPT FOR SUPER NINTENDO EMULATOR ----------
       async function loadBinary(url) {
         let response = await fetch(url);
         return new Uint8Array(await response.arrayBuffer());
@@ -323,7 +328,7 @@
             if (e.key === "Enter") sendMessage();
           });
 
-        
+
         // Loading in Super Metroid ROM
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
         // Loading in Super Metroid Save State created from exporting withing the webpage
@@ -372,7 +377,7 @@
         }
 
         emulator.addEventListener("afterRun", afterRun);
-        
+
         // ------- Keyboard-to-Game Controller Input Handler -------
         const input_buttons = [
           { key: 'l', value: 'B'},           // B button, 0
@@ -409,7 +414,7 @@
         function findInputIndex(key) {
           return input_buttons.findIndex(button => button.key === key);
         }
-        
+
         // Registers keyboard Inputs through the Page Window
         // Connects keyboard inputs into emulator controls
         window.addEventListener("keydown", (e) => {
@@ -431,8 +436,8 @@
         })
         // ------- End of Keyboard Input Handler -------
       };
-      
-      
+
+
       // ------- Code for Super Metroid Map w/ Node-Rooms -------
       import all_rooms from "./all_rooms.json" with { type: "json" };
       import all_nodes from "./all_nodes.json" with { type: "json" };
@@ -573,7 +578,7 @@
         //});
       }
 
-      //Object.keys(all_rooms).forEach(mk_room_rect);
+      Object.keys(all_rooms).forEach(mk_room_rect);
 
       function mk_node_circ(node_name) {
         const pos = all_nodes[node_name];
@@ -626,7 +631,7 @@
       function pos_list_to_loc(pos_list) {
         return pos_list.map(pos_to_loc)
       }
-      
+
       // ------- End of Room-Node Map code -------
 
       // Code for visual lines showing next path to take, interconnected with BDD program
