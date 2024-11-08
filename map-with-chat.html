@@ -108,9 +108,9 @@
       let instructions = `When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided.`;
 
       // In game-coordinates for Samus
-      let player = {x: 258, y: 562, marker: null};
+      let player = {x: 258, y: 562, marker: null, energy: 0, missiles: 0};
       let current_player_room = "Brimstar";
-      let player_stats = {energy: 99, missiles: 10}
+      // let player_stats = {energy: 0, missiles: 0}
       
       // Global
       let dv;  // DataView
@@ -161,12 +161,18 @@
         if (name == "get_player_current_room") {
           return "They are here in " + current_player_room;
         } else if (name == "get_player_status") {
-          player_stats.energy = dv.getUint8(0x09C2);
-          player_stats.missiles = dv.getUint8(0x09C6);
-          return "Energy " + player_stats.energy + " / Missiles " + player_stats.missiles;
-        } else if (name == "set_health") {
-          dv.setUint8(0x09C2, 4);
-          return "Missles " + player_stats.missles;
+          console.log("before " + player.energy);
+          dv.setUint8(0x09C2, 84);
+          console.log("after " + player.energy);
+
+          player.energy = dv.getUint8(0x09C2);
+          player.missiles = dv.getUint8(0x09C6);
+
+          
+          return "Energy " + player.energy + " / Missiles " + player.missiles;
+        // } else if (name == "set_health") {
+        //   dv.setUint8(0x09C2, 4);
+        //   return "Missles " + player_stats.missles;
         } else if (name == "get_register") {
           return machineState[args.register_name];
         } else if (name == "set_register") {
@@ -329,6 +335,9 @@
           context.strokeRect(x - 32, y - 32, 64, 64);
           var coords = abstractify_pos_global(dv, map_area_offsets);
           player.x = coords[0], player.y = coords[1];
+          // Setting Samus stats
+          player.energy = dv.getUint8(0x09C2);
+          player.missiles = dv.getUint8(0x09C6);
         }
 
         emulator.addEventListener("afterRun", afterRun);
