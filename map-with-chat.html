@@ -16,7 +16,7 @@
       body {
         font-family: Arial, sans-serif;
         max-width: 400px;
-        margin: 0 auto;
+        margin: 0;
         padding: 20px;
       }
       #chat-messages {
@@ -36,16 +36,15 @@
       }
       
       .main-div {
-        max-width: 600px;
+        max-width: 400px;
         padding: 5px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: space-around;
       }
       
-      .emulator {
-        max-width: 250px;
+      .col1, .col2 {
+        max-width: 200px;
         padding: 10px;
       }
     </style>
@@ -62,6 +61,10 @@
   </head>
   <body>
     <main>
+      <!-- Main Emulator Screen Container -->
+      <div id="container"></div>
+      <!-- Download Current Save State Button -->
+      <button id="export_button">Export Current State</button>
       <!-- Keyboard Input Handler -->
       <div id="button_input_handler">
         <b><u>Controls:</u></b
@@ -76,19 +79,12 @@
           >Right Trigger:</b
         >-E-<br />
       </div>
-      <div class="main-div">
-        <!-- Main Emulator Screen Container -->
-        <div class="emulator" id="container">
-          <!-- Download Current Save State Button -->
-          <button id="export_button">Export Current State</button>
-        </div>
-
-        <!-- Gemini 1.5 Pro Chatbox -->
-        <div id="chat-messages">
-          <input type="text" id="user-input" placeholder="Type your message..." />
-          <button id="send-button">Send</button><br /><br /><br />        
-        </div>
-      </div>
+      
+      <div
+      <!-- Gemini 1.5 Pro Chatbox -->
+      <div id="chat-messages"></div>
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="send-button">Send</button><br /><br /><br />
 
       <!-- Super Metroid Node & Room Map -->
       <p hidden id="goal">Goal</p>
