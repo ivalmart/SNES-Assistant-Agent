@@ -159,10 +159,12 @@
         if (name == "get_player_current_room") {
           return "They are here in " + current_player_room;
         } else if (name == "get_player_status") {
-          console.log(player_stats);
           player_stats.energy = dv.getUint8(0x09C2);
           player_stats.missiles = dv.getUint8(0x09C6);
           return "Energy " + player_stats.energy + " / Missiles " + player_stats.missiles;
+        // } else if (name == "set_missles") {
+        //   dv.setUint8(0x09C6, 4);
+        //   return "Missles " + player_stats.missles;
         } else if (name == "get_register") {
           return machineState[args.register_name];
         } else if (name == "set_register") {
@@ -258,7 +260,20 @@
               },
             },
             required: ["energy", "missiles"],
-          }
+          },
+        },
+        {
+          name: "set_missiles",
+          parameters: {
+            type: "object",
+            properties: {
+              new_missiles: {
+                type: "number",
+                description: "Changed number of missiles to a new number value",
+              },
+            },
+            required: ["new_missiles"],
+          },
         },
         {
           name: "get_register",
