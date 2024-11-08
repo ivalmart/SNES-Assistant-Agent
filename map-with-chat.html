@@ -306,7 +306,13 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
 
-      window.onload = () => {
+      // ---------- SCRIPT FOR SUPER NINTENDO EMULATOR ----------      
+      async function loadBinary(url) {
+        let response = await fetch(url);
+        return new Uint8Array(await response.arrayBuffer());
+      }
+
+      window.onload = async function () {
         initChat();
         document
           .getElementById("send-button")
@@ -316,15 +322,8 @@
           .addEventListener("keypress", (e) => {
             if (e.key === "Enter") sendMessage();
           });
-      };
 
-      // ---------- SCRIPT FOR SUPER NINTENDO EMULATOR ----------      
-      async function loadBinary(url) {
-        let response = await fetch(url);
-        return new Uint8Array(await response.arrayBuffer());
-      }
-
-      window.onload = async function () {
+        
         // Loading in Super Metroid ROM
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
         // Loading in Super Metroid Save State created from exporting withing the webpage
