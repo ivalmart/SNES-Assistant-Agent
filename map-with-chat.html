@@ -108,6 +108,7 @@
       // In game-coordinates for Samus
       let player = {x: 258, y: 562, marker: null};
       let current_player_room = "Brimstar";
+      let player_stats = {energy: 99, missiles: 10}
 
       // ---------- SCRIPT FOR GEMINI 1.5 PRO CHATBOT -----------
       function getApiKey() {
@@ -153,7 +154,10 @@
         // todo: check which function is being called and do something with args
         console.log({ name, args });
         if (name == "get_player_current_room") {
+          console.lo
           return "They are here in " + current_player_room;
+        } else if (name == "get_player_status") {
+          return "This is the player's current state: " + player_stats;
         } else if (name == "get_register") {
           return machineState[args.register_name];
         } else if (name == "set_register") {
@@ -226,13 +230,30 @@
           parameters: {
             type: "object",
             properties: {
-              ignored: {
+              room: {
                 type: "string",
-                description: "leave this blank",
+                description: "current area room in the game",
               },
             },
-            required: ["ignored"],
+            required: ["room"],
           },
+        },
+        {
+          name: "get_player_status",
+          parameters: {
+            type: "object",
+            properties: {
+              energy: {
+                type: "number",
+                description: "current health/energy in the game",
+              },
+              missiles: {
+                type: "number",
+                description: "current missile count in the game",
+              },
+            },
+            required: ["energy", "missiles"],
+          }
         },
         {
           name: "get_register",
@@ -631,7 +652,6 @@
       function update_pos() {
         const loc = pos_to_loc([player.x, player.y]);
         player.marker.setLatLng(loc);
-        // current_player_room = 
       }
       update_pos();
 
