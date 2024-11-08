@@ -110,7 +110,8 @@
       // Gemini 1.5 Chat Variables
       let chat;
       let currentModel = "gemini-1.5-flash";
-      let instructions = `When the user asks you questions about the game Super Metroid. They are the player of the game. Use the tools provided.`;
+      let instructions = `When the user asks you questions about the game Super Metroid, they are the player of the game.
+      Use the tools provided to read and write the state of the ongoing game that the user can see in an emulator beside this chat interface.`;
 
       // In game-coordinates for Samus
       let player = {
@@ -204,10 +205,10 @@
           userInput.value = "";
           try {
             let shouldContinue = true;
-
+            let fullResponse = "";
+            
             while (shouldContinue) {
               const result = await chat.sendMessageStream(message);
-              let fullResponse = "";
               const functionCalls = [];
               for await (const chunk of result.stream) {
                 const fcs = chunk.functionCalls();
@@ -225,7 +226,9 @@
                     functionCall.name,
                     functionCall.args
                   );
-                  displayMessage("Function Call", JSON.stringify(functionCall));
+                  fullResponse += "`"+functionCall.name+": " + JSON.stringify(functionCall.args) + "`\n\n";
+                  fullResponse += "→ `" + JSON.stringify(result) + "`\n\n";
+                  updateModelResponse(fullResponse);
                   console.log({ result });
                   message.push({
                     functionResponse: {
