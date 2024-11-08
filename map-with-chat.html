@@ -154,10 +154,10 @@
         // todo: check which function is being called and do something with args
         console.log({ name, args });
         if (name == "get_player_current_room") {
-          console.lo
           return "They are here in " + current_player_room;
         } else if (name == "get_player_status") {
-          return "This is the player's current state: " + player_stats;
+          console.log(player_stats);
+          return "Energy " + player_stats.energy + " / Missiles " + player_stats.missiles;
         } else if (name == "get_register") {
           return machineState[args.register_name];
         } else if (name == "set_register") {
