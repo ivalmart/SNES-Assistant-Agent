@@ -92,6 +92,7 @@
 
       // In game-coordinates for Samus
       let player = {x: 258, y: 562, marker: null};
+      let current_player_room = "";
 
       // ---------- SCRIPT FOR GEMINI 1.5 PRO CHATBOT -----------
       function getApiKey() {
@@ -615,7 +616,7 @@
       function update_pos() {
         const loc = pos_to_loc([player.x, player.y]);
         player.marker.setLatLng(loc);
-      }
+        current_player_room = 
       update_pos();
 
       // Track the plan
