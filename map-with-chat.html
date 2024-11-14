@@ -192,18 +192,20 @@
               console.log({ name, args });
               switch (name) {
                 case "get_player_current_room":
-                  player.current_room = get_samus_room(args.value);
+                  const [bank_rm, offset_rm] = args.address.split(':').map(hex => parseInt(hex, 16));
+                  console.assert(bank_rm == 0x7E)
+                  player.current_room = get_samus_room(dv.getUint16(offset_rm, true));
                   return "They are here in " + player.current_room + " / Address: " + args.value;
                   
                 case "ram_read_uint8":
-                  const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
-                  console.assert(bank == 0x7E)
-                  return dv.getUint8(offset);
+                  const [bank8, offset8] = args.address.split(':').map(hex => parseInt(hex, 16));
+                  console.assert(bank8 == 0x7E)
+                  return dv.getUint8(offset8);
                   
                 case "ram_read_uint16":
-                  const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
-                  console.assert(bank == 0x7E)
-                  return dv.getUint16(offset);
+                  const [bank16, offset16] = args.address.split(':').map(hex => parseInt(hex, 16));
+                  console.assert(bank16 == 0x7E)
+                  return dv.getUint16(offset16, true);
 
                 case "get_player_status":
                   player.energy = dv.getUint8(0x09C2);

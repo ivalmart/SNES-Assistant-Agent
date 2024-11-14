@@ -4,16 +4,29 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "room": {
-          "type": "string",
-          "description": "current area room in the game based on the memory address pointer for Samus"
+        "address": {
+          "type": "",
+          "description": "Get the the room that the player's current position is in"
         }
       },
-      "required": ["room"]
+      "required": ["address"]
     }
   },
   {
     "name": "ram_read_uint8",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "address":  {
+          "type": "string",
+          "description": "memory address with BANK:OFFSET format, e.g. 7E:12AB"
+        }
+      },
+      "required": ["address"]
+    }
+  },
+    {
+    "name": "ram_read_uint16",
     "parameters": {
       "type": "object",
       "properties": {
