@@ -134,7 +134,7 @@
               marker: null,
               energy: 0,
               missiles: 0,
-              current_room: "Brinstar"
+              current_room: {}
             };
             // let player_stats = {energy: 0, missiles: 0}
 
@@ -192,10 +192,8 @@
               console.log({ name, args });
               switch (name) {
                 case "get_player_current_room":
-                  const [bank_rm, offset_rm] = args.address.split(':').map(hex => parseInt(hex, 16));
-                  console.assert(bank_rm == 0x7E)
-                  player.current_room = get_samus_room(dv.getUint16(offset_rm, true));
-                  return "They are here in " + player.current_room + " / Address: " + args.value;
+                  player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), get_samus_area(dv.getuint16())];
+                  return "They are here in " + player.current_room;
                   
                 case "ram_read_uint8":
                   const [bank8, offset8] = args.address.split(':').map(hex => parseInt(hex, 16));

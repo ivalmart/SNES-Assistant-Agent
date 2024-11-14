@@ -4,12 +4,12 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "address": {
-          "type": "",
-          "description": "Get the the room that the player's current position is in"
+        "ignored": {
+          "type": "string",
+            "description": "leave this blank"
         }
       },
-      "required": ["address"]
+      "required": ["ignored"]
     }
   },
   {
