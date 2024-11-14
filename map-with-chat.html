@@ -202,7 +202,7 @@
                 //   return dv.getUint16(offset16, true);
 
                 case "get_player_current_room":
-                  player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), get_samus_area(dv.getUint8(0x079F))];
+                  player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), area_names[dv.getUint8(0x079F)]];
                   return "Player is at " + player.current_room;
 
                 case "get_player_status":
@@ -536,6 +536,21 @@
               "Crateria_Maridia_Shaft",
             ];
 
+            // Returns the current player's room location of the game area based on the address
+            // given by the room pointer that's compared by the room's memory addresses (shifted into )
+            function get_samus_room(address) {
+              console.log(address);
+              for (const [room_name, room_info] of Object.entries(all_rooms)) {
+                const mem_addr = room_info["Memory_Address"] & 0xffff;
+                console.log(room_info)
+                  if (address == mem_addr) {
+                    return room_name;
+                  }
+                }
+              return null;
+            }
+
+
             function mk_room_rect(room_name) {
               const pixels_per_maptile = 256;
               const room_info = all_rooms[room_name];
@@ -659,22 +674,9 @@
               });
             }
             //updatelines();
-            setInterval(update_pos, 100);
+            setInterval(update_pos, 200);
             //setInterval(updatelines, 1000);
       
-            function get_samus_room(address) {
-              for (const [room_name, room_info] of Object.entries(all_rooms)) {
-                const mem_addr = room_info["Memory_Address"] & 0xffff;
-                if (address == mem_addr) {
-                  return room_name;
-                }
-              }
-              return null;
-            }
-      
-            function get_samus_area(location) {
-              return area_names[location];
-            }
     </script>
   </body>
 </html>
