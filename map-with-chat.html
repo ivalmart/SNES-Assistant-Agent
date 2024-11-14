@@ -124,6 +124,7 @@
             7E:09CC - 7E:09CD    Samus's max super missiles
             7E:09CE - 7E:09CF    Samus's power bombs
             7E:09D0 - 7E:09D1    Samus's max power bombs
+            7E:079B - 7E:079C    Current room (Room ID in SMILE)
             `;
       
             // In game-coordinates for Samus
@@ -191,13 +192,18 @@
               console.log({ name, args });
               switch (name) {
                 case "get_player_current_room":
-                  
-                  return "They are here in " + player.current_room + " / Address: " dv.getUint16(0x079B, true);
+                  player.current_room = get_samus_room(args.value);
+                  return "They are here in " + player.current_room + " / Address: " + args.value;
                   
                 case "ram_read_uint8":
                   const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
                   console.assert(bank == 0x7E)
                   return dv.getUint8(offset);
+                  
+                case "ram_read_uint16":
+                  const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
+                  console.assert(bank == 0x7E)
+                  return dv.getUint16(offset);
 
                 case "get_player_status":
                   player.energy = dv.getUint8(0x09C2);
