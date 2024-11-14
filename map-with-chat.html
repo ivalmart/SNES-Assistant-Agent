@@ -542,7 +542,7 @@
               console.log(address);
               for (const [room_name, room_info] of Object.entries(all_rooms)) {
                 const mem_addr = room_info["Memory_Address"] & 0xffff;
-                console.log(room_info)
+                console.log("Address: " + address + " / Compared to: " + mem_addr + " : " + room_info["Memory_Address"]);
                   if (address == mem_addr) {
                     return room_name;
                   }
