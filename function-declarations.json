@@ -4,29 +4,16 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "ignored": {
+        "location": {
           "type": "string",
-            "description": "leave this blank"
+            "description": "current location of Samus/the player"
         }
       },
-      "required": ["ignored"]
+      "required": ["location"]
     }
   },
   {
     "name": "ram_read_uint8",
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "address":  {
-          "type": "string",
-          "description": "memory address with BANK:OFFSET format, e.g. 7E:12AB"
-        }
-      },
-      "required": ["address"]
-    }
-  },
-    {
-    "name": "ram_read_uint16",
     "parameters": {
       "type": "object",
       "properties": {

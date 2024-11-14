@@ -190,20 +190,20 @@
             function getResultForAssistantFunctionCall(name, args) {
               // todo: check which function is being called and do something with args
               console.log({ name, args });
-              switch (name) {
-                case "get_player_current_room":
-                  player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), get_samus_area(dv.getUint8(0x079F))];
-                  return "They are here in " + player.current_room;
-                  
+              switch (name) {                  
                 case "ram_read_uint8":
                   const [bank8, offset8] = args.address.split(':').map(hex => parseInt(hex, 16));
                   console.assert(bank8 == 0x7E)
                   return dv.getUint8(offset8);
                   
-                case "ram_read_uint16":
-                  const [bank16, offset16] = args.address.split(':').map(hex => parseInt(hex, 16));
-                  console.assert(bank16 == 0x7E)
-                  return dv.getUint16(offset16, true);
+                // case "ram_read_uint16":
+                //   const [bank16, offset16] = args.address.split(':').map(hex => parseInt(hex, 16));
+                //   console.assert(bank16 == 0x7E)
+                //   return dv.getUint16(offset16, true);
+
+                case "get_player_current_room":
+                  player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), get_samus_area(dv.getUint8(0x079F))];
+                  return "Player is at " + player.current_room;
 
                 case "get_player_status":
                   player.energy = dv.getUint8(0x09C2);
