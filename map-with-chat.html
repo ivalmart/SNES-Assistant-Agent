@@ -191,7 +191,8 @@
               console.log({ name, args });
               switch (name) {
                 case "get_player_current_room":
-                  return "They are here in " + player.current_room;
+                  
+                  return "They are here in " + player.current_room + " / Address: " dv.getUint16(0x079B, true);
                   
                 case "ram_read_uint8":
                   const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
@@ -202,7 +203,7 @@
                   player.energy = dv.getUint8(0x09C2);
                   player.missiles = dv.getUint8(0x09C6);
                   return "Energy " + player.energy + " / Missiles " + player.missiles;
-
+                  
                 case "get_register":
                   return machineState[args.register_name];
 
@@ -631,7 +632,7 @@
             function pos_list_to_loc(pos_list) {
               return pos_list.map(pos_to_loc)
             }
-
+      
             // ------- End of Room-Node Map code -------
 
             // Code for visual lines showing next path to take, interconnected with BDD program
@@ -654,6 +655,16 @@
             //updatelines();
             setInterval(update_pos, 100);
             //setInterval(updatelines, 1000);
+      
+            function get_samus_room(address) {
+              for (const [room_name, room_info] of Object.entries(all_rooms)) {
+                const mem_addr = room_info["Memory_Address"] & 0xffff;
+                if (address == mem_addr) {
+                  return room_name;
+                }
+              }
+              return null;
+            }
     </script>
   </body>
 </html>
