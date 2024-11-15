@@ -104,15 +104,16 @@
             // Gemini 1.5 Pro Script imports
             import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "https://esm.run/@google/generative-ai";
             import { marked } from "https://esm.run/marked";
-            // Other imports to make code cleaner
-            import functionDeclarations from "./function-declarations.json" with { "type": "json" }
 
-
+      
             // Gemini 1.5 Chat Variables
             let chat;
             let currentModel = "gemini-1.5-flash";
-            let instructions = `When the user asks you questions about the game Super Metroid, they are the player of the game.
-            Use the tools provided to read and write the state of the ongoing game that the user can see in an emulator beside this chat interface.`;
+            let instructions = `
+            When the user asks you questions about the game Super Metroid, they are the
+            player of the game. Use the tools provided to read and write the state of
+            the ongoing game that the user can see in an emulator beside this chat interface.
+            `;
 
             instructions += `
             Memory addresses for useful game state:
@@ -125,19 +126,9 @@
             7E:09CE - 7E:09CF    Samus's power bombs
             7E:09D0 - 7E:09D1    Samus's max power bombs
             7E:079B - 7E:079C    Current room (Room ID in SMILE)
-            7E:0756              Which item of the list is selected on the equipment pause screen
-            7E:09D2 - 7E:09D3    Currently selected status bar item/ HUD item index
-            {
-                0: Nothing
-                1: Missiles
-                2: Super missiles
-                3: Power bombs
-                4: Grapple beam
-                5: X-ray
-            }
             `;
       
-            // In game-coordinates for Samus
+            // Samus statistics/object for data
             let player = {
               x: 258,
               y: 562,
@@ -146,7 +137,6 @@
               missiles: 0,
               current_room: {}
             };
-            // let player_stats = {energy: 0, missiles: 0}
 
             // Global
             let dv;  // DataView
@@ -191,14 +181,10 @@
               }
             }
 
-            const machineState = window.machineState = {
-              r0: 10,
-              r1: 20
-            };
-
-            //
+            // Function Declarations for Gemini AI to use for Super Metroid-related purposes
+            import functionDeclarations from "./function-declarations.json" with { "type": "json" }
+      
             function getResultForAssistantFunctionCall(name, args) {
-              // todo: check which function is being called and do something with args
               console.log({ name, args });
               switch (name) {                  
                 case "ram_read_uint8":
@@ -221,6 +207,7 @@
               }
             }
 
+            // Send Message function for Gemini Chat
             async function sendMessage() {
               const userInput = document.getElementById("user-input");
               let message = userInput.value.trim();
@@ -326,7 +313,6 @@
                 .addEventListener("keypress", (e) => {
                   if (e.key === "Enter") sendMessage();
                 });
-
 
               // Loading in Super Metroid ROM
               let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
