@@ -1,6 +1,11 @@
 import { emulateSnesConsole } from "./snes.mjs";
 
-async function setupCanvas(canvas) {
+async function loadBinary(url) {
+  let response = await fetch(url);
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+async function setupGameContainer(canvas) {
   // Loading in Super Metroid ROM
   let romBytes = await loadBinary(
     "https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153"
@@ -49,32 +54,32 @@ async function setupCanvas(canvas) {
   // Registers keyboard Inputs through the Page Window
   // Connects keyboard inputs into emulator controls
   window.addEventListener("keydown", (e) => {
-    const index = findInputIndex(e.key);
+    const index = input_buttons.findIndex(button => button.key === e.key);
     const keyState = `0,1,0,${index}`;
     // Checks to see if the key pressed down exists inside the keyboard inputs
-    if (index != -1) {
+    if(index != -1) {
       emulator.input_state[keyState] = 1;
     }
-  });
+  })
   // Resets registered button inputs
   window.addEventListener("keyup", (e) => {
-    const index = findInputIndex(e.key);
+    const index = input_buttons.findIndex(button => button.key === e.key);
     const keyState = `0,1,0,${index}`;
     // Checks to see if the key released exists inside the keyboard inputs
-    if (index != -1) {
+    if(index != -1) {
       emulator.input_state[keyState] = 0;
     }
-  });
+  })
   // ------- End of Keyboard Input Handler -------
 }
 
 export class Toolkit {
-  constructor(emulatorCanvas) {
-    this.emulatorCanvas = emulatorCanvas;
+  constructor(container) {
+    this.container = container;
   }
 
   async setup() {
-    await setupCanvas(this.emulatorCanvas);
+    await setupGameContainer(this.container);
   }
 
   getFunctionDeclarations() {

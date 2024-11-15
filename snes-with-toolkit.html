@@ -1,0 +1,16 @@
+<html>
+  <head> </head>
+  <body>
+    <div id="container"></div>
+
+    <script type="module">
+      import { Toolkit } from "./toolkit.mjs";
+
+      const container = document.getElementById("container");
+      const tk = new Toolkit(container);
+      await tk.setup();
+      console.log("Ready!");
+      window.tk = tk;
+    </script>
+  </body>
+</html>
