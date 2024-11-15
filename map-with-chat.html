@@ -104,7 +104,8 @@
             // Gemini 1.5 Pro Script imports
             import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "https://esm.run/@google/generative-ai";
             import { marked } from "https://esm.run/marked";
-
+            // Function Declarations for Gemini AI to use for Super Metroid-related purposes
+            import functionDeclarations from "./function-declarations.json" with { "type": "json" }
       
             // Gemini 1.5 Chat Variables
             let chat;
@@ -125,7 +126,6 @@
             7E:09CC - 7E:09CD    Samus's max super missiles
             7E:09CE - 7E:09CF    Samus's power bombs
             7E:09D0 - 7E:09D1    Samus's max power bombs
-            7E:079B - 7E:079C    Current room (Room ID in SMILE)
             `;
       
             // Samus statistics/object for data
@@ -181,8 +181,6 @@
               }
             }
 
-            // Function Declarations for Gemini AI to use for Super Metroid-related purposes
-            import functionDeclarations from "./function-declarations.json" with { "type": "json" }
       
             function getResultForAssistantFunctionCall(name, args) {
               console.log({ name, args });
@@ -501,18 +499,6 @@
               7: "Debug",
             };
 
-            // Area offsets in map tiles
-            const area_offsets = {
-              0: [3, 10],
-              1: [0, 28],
-              2: [31, 48],
-              3: [37, 0],
-              4: [28, 28],
-              5: [0, 10],
-              // Out of bounds
-              6: [0, -10],
-              7: [0, 0],
-            };
             const crateria2_offset = [7, 0];
             const crateria2_rooms = [
               "East_Ocean",
@@ -529,8 +515,8 @@
 
               let rect_start_mt = room_info["Map_Pos"];
               rect_start_mt = [
-                rect_start_mt[0] + area_offsets[r][0],
-                rect_start_mt[1] + area_offsets[r][1],
+                rect_start_mt[0] + map_area_offsets[r][0],
+                rect_start_mt[1] + map_area_offsets[r][1],
               ];
               if (crateria2_rooms.includes(room_name)) {
                 rect_start_mt[0] += crateria2_offset[0];

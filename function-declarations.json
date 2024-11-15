@@ -19,7 +19,7 @@
       "properties": {
         "location": {
           "type": "string",
-            "description": "current location of Samus/the player in the game"
+            "description": "current location/room of Samus/the player in the game"
         }
       },
       "required": ["location"]

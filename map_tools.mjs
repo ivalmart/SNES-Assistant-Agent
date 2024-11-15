@@ -1,3 +1,14 @@
+export const map_area_names = {
+  0: "Crateria",
+  1: "Brinstar",
+  2: "Norfair",
+  3: "Wrecked Ship",
+  4: "Maridia",
+  5: "Tourian",
+  6: "Ceres",
+  7: "Debug",
+};
+
 export const map_area_offsets = {
   0: [3, 10],
   1: [0, 28],
