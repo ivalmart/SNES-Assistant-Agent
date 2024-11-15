@@ -109,8 +109,8 @@
       
             // Gemini 1.5 Chat Variables
             let chat;
-            let currentModel = "gemini-1.5-pro";
-            //let currentModel = "gemini-1.5-flash";
+            let currentModel = "gemini-1.5-flash";
+            //let currentModel = "gemini-1.5-flash-8b";
 
             let instructions = `
             When the user asks you questions about the game Super Metroid, they are the
@@ -231,7 +231,7 @@
                       updateModelResponse(fullResponse);
                     }
                     if (functionCalls.length > 0) {
-                      message = "";
+                      message = [];
                       for (const functionCall of functionCalls) {
                         const result = getResultForAssistantFunctionCall(
                           functionCall.name,
@@ -241,7 +241,7 @@
                         fullResponse += "→ `" + JSON.stringify(result) + "`\n\n";
                         updateModelResponse(fullResponse);
                         console.log({ result });
-                        message += JSON.stringify({
+                        message.push({
                           functionResponse: {
                             name: functionCall.name,
                             response: {
