@@ -54,22 +54,22 @@ async function setupGameContainer(canvas) {
   // Registers keyboard Inputs through the Page Window
   // Connects keyboard inputs into emulator controls
   window.addEventListener("keydown", (e) => {
-    const index = input_buttons.findIndex(button => button.key === e.key);
+    const index = input_buttons.findIndex((button) => button.key === e.key);
     const keyState = `0,1,0,${index}`;
     // Checks to see if the key pressed down exists inside the keyboard inputs
-    if(index != -1) {
+    if (index != -1) {
       emulator.input_state[keyState] = 1;
     }
-  })
+  });
   // Resets registered button inputs
   window.addEventListener("keyup", (e) => {
-    const index = input_buttons.findIndex(button => button.key === e.key);
+    const index = input_buttons.findIndex((button) => button.key === e.key);
     const keyState = `0,1,0,${index}`;
     // Checks to see if the key released exists inside the keyboard inputs
-    if(index != -1) {
+    if (index != -1) {
       emulator.input_state[keyState] = 0;
     }
-  })
+  });
   // ------- End of Keyboard Input Handler -------
 }
 
@@ -83,10 +83,58 @@ export class Toolkit {
   }
 
   getFunctionDeclarations() {
-    return [];
+    return [
+      {
+        name: "ram_read_uint8",
+        parameters: {
+          type: "object",
+          properties: {
+            address: {
+              type: "string",
+              description:
+                "memory address with BANK:OFFSET format, e.g. 7E:12AB",
+            },
+          },
+          required: ["address"],
+        },
+      },
+      {
+        name: "get_player_current_room",
+        parameters: {
+          type: "object",
+          properties: {
+            location: {
+              type: "string",
+              description:
+                "current location/room of Samus/the player in the game",
+            },
+          },
+          required: ["location"],
+        },
+      },
+      {
+        name: "get_player_status",
+        parameters: {
+          type: "object",
+          properties: {
+            energy: {
+              type: "number",
+              description: "current health/energy in the game",
+            },
+            missiles: {
+              type: "number",
+              description: "current missile count in the game",
+            },
+          },
+          required: ["energy", "missiles"],
+        },
+      },
+    ];
   }
 
   getFunctionCallResult(name, args) {
-    return "ok";
+    /*switch(name) {
+      case "ram_read_uint8": 
+    }*/
   }
 }
