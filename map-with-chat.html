@@ -231,7 +231,7 @@
                       updateModelResponse(fullResponse);
                     }
                     if (functionCalls.length > 0) {
-                      message = [];
+                      //message = [];
                       for (const functionCall of functionCalls) {
                         const result = getResultForAssistantFunctionCall(
                           functionCall.name,
@@ -241,7 +241,7 @@
                         fullResponse += "→ `" + JSON.stringify(result) + "`\n\n";
                         updateModelResponse(fullResponse);
                         console.log({ result });
-                        message.push({
+                        message = JSON.stringify({
                           functionResponse: {
                             name: functionCall.name,
                             response: {
