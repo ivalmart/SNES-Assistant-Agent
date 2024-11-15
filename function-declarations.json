@@ -1,18 +1,5 @@
 [
   {
-    "name": "get_player_current_room",
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "location": {
-          "type": "string",
-            "description": "current location of Samus/the player in the game"
-        }
-      },
-      "required": ["location"]
-    }
-  },
-  {
     "name": "ram_read_uint8",
     "parameters": {
       "type": "object",
@@ -23,6 +10,19 @@
         }
       },
       "required": ["address"]
+    }
+  },
+  {
+    "name": "get_player_current_room",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+            "description": "current location of Samus/the player in the game"
+        }
+      },
+      "required": ["location"]
     }
   },
   {

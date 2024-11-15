@@ -125,6 +125,16 @@
             7E:09CE - 7E:09CF    Samus's power bombs
             7E:09D0 - 7E:09D1    Samus's max power bombs
             7E:079B - 7E:079C    Current room (Room ID in SMILE)
+            7E:0756              Which item of the list is selected on the equipment pause screen
+            7E:09D2 - 7E:09D3    Currently selected status bar item/ HUD item index
+            {
+                0: Nothing
+                1: Missiles
+                2: Super missiles
+                3: Power bombs
+                4: Grapple beam
+                5: X-ray
+            }
             `;
       
             // In game-coordinates for Samus
@@ -193,8 +203,8 @@
               switch (name) {                  
                 case "ram_read_uint8":
                   const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
-                  console.log(bank +  " " + offset);
                   console.assert(bank == 0x7E)
+                  console.log(dv.getUint8(offset));
                   return dv.getUint8(offset);
 
                 case "get_player_current_room":
