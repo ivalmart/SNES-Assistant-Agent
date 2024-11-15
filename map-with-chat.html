@@ -386,7 +386,7 @@
                 button.innerHTML = input_buttons[i].value.toString();
                 button_input_handler.append(button);
 
-                const key = `0,1,0,${i}`;
+                const key = `0,1,0,${i}`; // refer to snes.mjs for what each index means, set_input_state function
                 // For buttons on screen
                 button.addEventListener("mousedown", (e) => {
                   emulator.input_state[key] = 1;
@@ -554,21 +554,6 @@
               rect.bindTooltip(
                 `${room_name.replaceAll("_", " ")}, ${area_names[r]}`
               );
-
-              // rect.bindPopup(
-              //   `<img src="https://cdn.glitch.global/bd45ae5d-f912-438c-bc0b-3ee0a76d27c8/${room_name}.png" style="max-width: 256px; max-height: 256px;">`
-              // );
-              // rect.on('click', (event) => {
-              //   L.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
-              //
-              //   const rel_x = (event.containerPoint.x - event.target._pxBounds.min.x)/(event.target._pxBounds.max.x - event.target._pxBounds.min.x);
-              //   const rel_y = (event.containerPoint.y - event.target._pxBounds.min.y)/(event.target._pxBounds.max.y - event.target._pxBounds.min.y);
-              // todo: use room_info["Extent"] and such to get coordinates within the room
-
-              //
-              //const marker = L.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
-              //marker.bindTooltip(JSON.stringify({room_name, rel_x, rel_y}));
-              //});
             }
 
             Object.keys(all_rooms).forEach(mk_room_rect);
@@ -583,7 +568,6 @@
                `${node_name.replaceAll("_", " ")}`
               );
               circ.on('click', (event) => {
-                 // console.log(node_name);
                  fetch(node_name); // Will Fail!
                  document.getElementById("goal").innerHTML = node_name;
               });
@@ -607,6 +591,7 @@
               const loc = pos_to_loc([player.x, player.y]);
               player.marker.setLatLng(loc);
             }
+            // Updates Samus position on web map of rooms/nodes
             update_pos();
 
             // Track the plan
@@ -644,9 +629,7 @@
                 remaining_pline = L.polyline(npr, {color: `hsla(0, 0%, 51%, 0.5)`}).addTo(map);
               });
             }
-            //updatelines();
             setInterval(update_pos, 200);
-            //setInterval(updatelines, 1000);
       
     </script>
   </body>
