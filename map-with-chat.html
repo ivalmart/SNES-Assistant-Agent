@@ -192,14 +192,10 @@
               console.log({ name, args });
               switch (name) {                  
                 case "ram_read_uint8":
-                  const [bank8, offset8] = args.address.split(':').map(hex => parseInt(hex, 16));
-                  console.assert(bank8 == 0x7E)
-                  return dv.getUint8(offset8);
-                  
-                // case "ram_read_uint16":
-                //   const [bank16, offset16] = args.address.split(':').map(hex => parseInt(hex, 16));
-                //   console.assert(bank16 == 0x7E)
-                //   return dv.getUint16(offset16, true);
+                  const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
+                  console.log(bank +  " " + offset);
+                  console.assert(bank == 0x7E)
+                  return dv.getUint8(offset);
 
                 case "get_player_current_room":
                   player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), area_names[dv.getUint8(0x079F)]];
@@ -209,19 +205,6 @@
                   player.energy = dv.getUint8(0x09C2);
                   player.missiles = dv.getUint8(0x09C6);
                   return "Energy " + player.energy + " / Missiles " + player.missiles;
-                  
-                case "get_register":
-                  return machineState[args.register_name];
-
-                case "set_register":
-                  machineState[args.register_name] = args.value;
-                  return "ok";
-
-                case "add_registers":
-                  const a = machineState[args.source_register_a];
-                  const b = machineState[args.source_register_b];
-                  machineState[args.destination_register] = a + b;
-                  return "ok";
 
                 default:
                   return `Unknown function ${name}. Tell the user about this problem!`;
@@ -417,15 +400,10 @@
                 });
               }
 
-              // Helper function
-              function findInputIndex(key) {
-                return input_buttons.findIndex(button => button.key === key);
-              }
-
               // Registers keyboard Inputs through the Page Window
               // Connects keyboard inputs into emulator controls
               window.addEventListener("keydown", (e) => {
-                const index = findInputIndex(e.key);
+                const index = input_buttons.findIndex(button => button.key === e.key);
                 const keyState = `0,1,0,${index}`;
                 // Checks to see if the key pressed down exists inside the keyboard inputs
                 if(index != -1) {
@@ -434,7 +412,7 @@
               })
               // Resets registered button inputs
               window.addEventListener("keyup", (e) => {
-                const index = findInputIndex(e.key);
+                const index = input_buttons.findIndex(button => button.key === e.key);
                 const keyState = `0,1,0,${index}`;
                 // Checks to see if the key released exists inside the keyboard inputs
                 if(index != -1) {
@@ -449,6 +427,18 @@
             import all_rooms from "./all_rooms.json" with { type: "json" };
             import all_nodes from "./all_nodes.json" with { type: "json" };
 
+            // Returns the current player's room location of the game area based on the address
+            // given by the room pointer that's compared by the room's memory addresses (shifted into )
+            function get_samus_room(address) {
+              for (const [room_name, room_info] of Object.entries(all_rooms)) {
+                const mem_addr = room_info["Memory_Address"] & 0xffff;
+                  if (address == mem_addr) {
+                    return room_name;
+                  }
+                }
+              return null;
+            }
+      
             // Creates the leaflet map
             const base = {
               width: 18432, // pixels
@@ -535,21 +525,6 @@
               "Crateria_Power_Door",
               "Crateria_Maridia_Shaft",
             ];
-
-            // Returns the current player's room location of the game area based on the address
-            // given by the room pointer that's compared by the room's memory addresses (shifted into )
-            function get_samus_room(address) {
-              console.log(address);
-              for (const [room_name, room_info] of Object.entries(all_rooms)) {
-                const mem_addr = room_info["Memory_Address"] & 0xffff;
-                console.log("Address: " + address + " / Compared to: " + mem_addr + " : " + room_info["Memory_Address"]);
-                  if (address == mem_addr) {
-                    return room_name;
-                  }
-                }
-              return null;
-            }
-
 
             function mk_room_rect(room_name) {
               const pixels_per_maptile = 256;
