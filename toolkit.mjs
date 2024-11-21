@@ -16,6 +16,7 @@ async function setupGameContainer(canvas) {
   );
 
   let emulator = emulateSnesConsole(romBytes, stateBytes, canvas);
+  let dv = new DataView(emulator.retro.get_memory_data(2).slice(0, 0x2000).buffer);
 
   // Drawing on emulator space
   let context = emulator.canvas.getContext("2d");
@@ -132,9 +133,25 @@ export class Toolkit {
     ];
   }
 
-  getFunctionCallResult(name, args) {
-    /*switch(name) {
-      case "ram_read_uint8": 
-    }*/
+  getFunctionCallResult(name, args, dv) {
+    switch (name) {                  
+      case "ram_read_uint8":
+        const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
+        console.assert(bank == 0x7E)
+        console.log(dv.getUint8(offset));
+        return dv.getUint8(offset);
+
+      case "get_player_current_room":
+        player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), area_names[dv.getUint8(0x079F)]];
+        return "Player is at " + player.current_room;
+
+      case "get_player_status":
+        player.energy = dv.getUint8(0x09C2);
+        player.missiles = dv.getUint8(0x09C6);
+        return "Energy " + player.energy + " / Missiles " + player.missiles;
+
+      default:
+        return `Unknown function ${name}. Tell the user about this problem!`;
+    }
   }
 }
