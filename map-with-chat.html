@@ -349,17 +349,17 @@
                 dv = new DataView(
                   emulator.retro.get_memory_data(2).slice(0, 0x2000).buffer
                 );
+                // Game State in yellow on top left
                 let g = dv.getUint8(0x0998);
                 context.fillText("game state 0x" + g.toString(16), 8, 16);
                 // Setting Samus coordinates
+                
                 let x = dv.getUint8(0x0b04);
                 let y = dv.getUint8(0x0b06);
                 context.strokeRect(x - 32, y - 32, 64, 64);
-                var coords = abstractify_pos_global(dv, map_area_offsets);
+                // var coords = abstractify_pos_global(dv, map_area_offsets);
+                var coords = calculate_samus_pos()
                 player.x = coords[0], player.y = coords[1];
-                // Setting Samus stats
-                player.energy = dv.getUint8(0x09C2);
-                player.missiles = dv.getUint8(0x09C6);
               }
 
               emulator.addEventListener("afterRun", afterRun);

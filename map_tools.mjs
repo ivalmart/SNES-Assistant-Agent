@@ -40,7 +40,7 @@ function abstractify_pos(dv) {
   return [left, top];
 }
 
-export function abstractify_pos_global(dv, map_area_offsets) {
+function abstractify_pos_global(dv, map_area_offsets) {
   // Area pos
   const area_index = dv.getUint8(0x079F);
   const aoffset = map_area_offsets[area_index];
@@ -54,6 +54,11 @@ export function abstractify_pos_global(dv, map_area_offsets) {
   const pos = [area_pos[0] + map_pos[0] + room_pos[0], area_pos[1] + map_pos[1] + room_pos[1]]
   return pos;
 }
+
+export function calculate_samus_pos() {
+  
+}
+
 // Returns the current player's room location of the game area based on the address
 // given by the room pointer that's compared by the room's memory addresses (shifted into )
 export function get_samus_room(address, rooms) {

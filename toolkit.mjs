@@ -16,7 +16,7 @@ async function setupGameContainer(canvas) {
   );
 
   let emulator = emulateSnesConsole(romBytes, stateBytes, canvas);
-  let dv = new DataView(emulator.retro.get_memory_data(2).slice(0, 0x2000).buffer);
+  let dv;
 
   // Drawing on emulator space
   let context = emulator.canvas.getContext("2d");
@@ -27,6 +27,7 @@ async function setupGameContainer(canvas) {
 
   function afterRun() {
     // ...
+    dv = new DataView(emulator.retro.get_memory_data(2).slice(0, 0x2000).buffer);
   }
 
   emulator.addEventListener("afterRun", afterRun);
