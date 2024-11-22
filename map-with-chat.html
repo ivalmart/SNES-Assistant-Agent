@@ -100,7 +100,7 @@
     <script type="module">
             // Super Nintendo emulator import + Map Node Tools imports
             import { emulateSnesConsole } from "./snes.mjs";
-            import { abstractify_pos_global, get_samus_room, map_area_names, map_area_offsets, crateria2_offset, crateria2_rooms } from "./map_tools.mjs";
+            import { calculate_samus_pos, get_samus_room, map_area_names, map_area_offsets, crateria2_offset, crateria2_rooms } from "./map_tools.mjs";
             // Gemini 1.5 Pro Script imports
             import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "https://esm.run/@google/generative-ai";
             import { marked } from "https://esm.run/marked";
@@ -353,12 +353,12 @@
                 let g = dv.getUint8(0x0998);
                 context.fillText("game state 0x" + g.toString(16), 8, 16);
                 // Setting Samus coordinates
-                
                 let x = dv.getUint8(0x0b04);
                 let y = dv.getUint8(0x0b06);
-                context.strokeRect(x - 32, y - 32, 64, 64);
+                context.strokeRect(x - 32, y - 32, 64, 64);                
+                var coords = calculate_samus_pos(dv);                
+                
                 // var coords = abstractify_pos_global(dv, map_area_offsets);
-                var coords = calculate_samus_pos()
                 player.x = coords[0], player.y = coords[1];
               }
 
