@@ -55,6 +55,7 @@ function abstractify_pos_global(dv, map_area_offsets) {
   return pos;
 }
 
+// Returns the calculation values for Samus's positions within the game map created by Ross
 export function calculate_samus_pos(dv) {
   let x = dv.getUint8(0x0b04);
   let y = dv.getUint8(0x0b06);  
