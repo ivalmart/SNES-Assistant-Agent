@@ -1,4 +1,6 @@
 import { emulateSnesConsole } from "./snes.mjs";
+import { calculate_samus_pos, get_samus_room, map_area_names, map_area_offsets, crateria2_offset, crateria2_rooms } from "./map_tools.mjs";
+
 
 async function loadBinary(url) {
   let response = await fetch(url);
@@ -143,13 +145,10 @@ export class Toolkit {
         return dv.getUint8(offset);
 
       case "get_player_current_room":
-        player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), area_names[dv.getUint8(0x079F)]];
-        return "Player is at " + player.current_room;
+        return "Player is at " + [get_samus_room(dv.getUint16(0x79B, true)), map_area_names[dv.getUint8(0x079F)]];
 
       case "get_player_status":
-        player.energy = dv.getUint8(0x09C2);
-        player.missiles = dv.getUint8(0x09C6);
-        return "Energy " + player.energy + " / Missiles " + player.missiles;
+        return "Energy " + dv.getUint8(0x09C2) + " / Missiles " + dv.getUint8(0x09C6);
 
       default:
         return `Unknown function ${name}. Tell the user about this problem!`;
