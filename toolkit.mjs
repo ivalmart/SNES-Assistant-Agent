@@ -1,6 +1,8 @@
 import { emulateSnesConsole } from "./snes.mjs";
 import { calculate_samus_pos, get_samus_room, map_area_names, map_area_offsets, crateria2_offset, crateria2_rooms } from "./map_tools.mjs";
+import { all_rooms } from "./all_rooms.json" with { type: "json" };
 
+let dv;
 
 async function loadBinary(url) {
   let response = await fetch(url);
@@ -18,7 +20,7 @@ async function setupGameContainer(canvas) {
   );
 
   let emulator = emulateSnesConsole(romBytes, stateBytes, canvas);
-  let dv;
+  // let dv;
 
   // Drawing on emulator space
   let context = emulator.canvas.getContext("2d");
@@ -85,6 +87,10 @@ export class Toolkit {
   async setup() {
     await setupGameContainer(this.container);
   }
+  
+  testingFunction() {
+    return true;
+  }
 
   getFunctionDeclarations() {
     return [
@@ -136,7 +142,7 @@ export class Toolkit {
     ];
   }
 
-  getFunctionCallResult(name, args, dv) {
+  getFunctionCallResult(name, args) {
     switch (name) {                  
       case "ram_read_uint8":
         const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
@@ -145,7 +151,9 @@ export class Toolkit {
         return dv.getUint8(offset);
 
       case "get_player_current_room":
-        return "Player is at " + [get_samus_room(dv.getUint16(0x79B, true)), map_area_names[dv.getUint8(0x079F)]];
+// player.current_room = [get_samus_room(dv.getUint16(0x79B, true), Object.entries(all_rooms)), map_area_names[dv.getUint8(0x079F)]];
+
+        return "Player is at " + [get_samus_room(dv.getUint16(0x79B, true), all_rooms), map_area_names[dv.getUint8(0x079F)]];
 
       case "get_player_status":
         return "Energy " + dv.getUint8(0x09C2) + " / Missiles " + dv.getUint8(0x09C6);
