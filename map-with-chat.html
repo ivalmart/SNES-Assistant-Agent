@@ -246,7 +246,8 @@
                     functionResponse: {
                       name: functionCall.name,
                       response: {
-                        content: result,
+                        name: functionCall.name,
+                        content: {result},
                       },
                     },
                   });
