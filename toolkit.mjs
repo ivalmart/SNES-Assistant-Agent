@@ -1,6 +1,6 @@
 import { emulateSnesConsole } from "./snes.mjs";
 import { calculate_samus_pos, get_samus_room, map_area_names, map_area_offsets, crateria2_offset, crateria2_rooms } from "./map_tools.mjs";
-import { all_rooms } from "./all_rooms.json" with { type: "json" };
+import all_rooms from "./all_rooms.json" with { type: "json" };
 
 let dv;
 
@@ -76,8 +76,8 @@ async function setupGameContainer(canvas) {
       emulator.input_state[keyState] = 0;
     }
   });
-  // ------- End of Keyboard Input Handler -------
 }
+// ------- End of Keyboard Input Handler -------
 
 export class Toolkit {
   constructor(container) {
