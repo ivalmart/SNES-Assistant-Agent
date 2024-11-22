@@ -247,10 +247,11 @@
                       name: functionCall.name,
                       response: {
                         name: functionCall.name,
-                        content: {result},
+                        response: result,
                       },
                     },
                   });
+                  console.log(message);
                 }
                 shouldContinue = true;
               } else {
