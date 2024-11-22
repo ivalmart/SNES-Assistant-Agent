@@ -54,3 +54,14 @@ export function abstractify_pos_global(dv, map_area_offsets) {
   const pos = [area_pos[0] + map_pos[0] + room_pos[0], area_pos[1] + map_pos[1] + room_pos[1]]
   return pos;
 }
+// Returns the current player's room location of the game area based on the address
+// given by the room pointer that's compared by the room's memory addresses (shifted into )
+export function get_samus_room(address, rooms) {
+  for (const [room_name, room_info] of rooms) {
+    const mem_addr = room_info["Memory_Address"] & 0xffff;
+      if (address == mem_addr) {
+        return room_name;
+      }
+    }
+  return null;
+}

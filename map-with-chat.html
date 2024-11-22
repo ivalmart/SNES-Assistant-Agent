@@ -100,7 +100,7 @@
     <script type="module">
             // Super Nintendo emulator import + Map Node Tools imports
             import { emulateSnesConsole } from "./snes.mjs";
-            import { abstractify_pos_global, map_area_names, map_area_offsets, crateria2_offset, } from "./map_tools.mjs";
+            import { abstractify_pos_global, get_samus_room, map_area_names, map_area_offsets, crateria2_offset, crateria2_rooms } from "./map_tools.mjs";
             // Gemini 1.5 Pro Script imports
             import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "https://esm.run/@google/generative-ai";
             import { marked } from "https://esm.run/marked";
@@ -194,7 +194,7 @@
                   return dv.getUint8(offset);
 
                 case "get_player_current_room":
-                  player.current_room = [get_samus_room(dv.getUint16(0x79B, true)), map_area_names[dv.getUint8(0x079F)]];
+                  player.current_room = [get_samus_room(dv.getUint16(0x79B, true), Object.entries(all_rooms)), map_area_names[dv.getUint8(0x079F)]];
                   return "Player is at " + player.current_room;
 
                 case "get_player_status":
@@ -422,18 +422,6 @@
             // ------- Code for Super Metroid Map w/ Node-Rooms -------
             import all_rooms from "./all_rooms.json" with { type: "json" };
             import all_nodes from "./all_nodes.json" with { type: "json" };
-
-            // Returns the current player's room location of the game area based on the address
-            // given by the room pointer that's compared by the room's memory addresses (shifted into )
-            function get_samus_room(address) {
-              for (const [room_name, room_info] of Object.entries(all_rooms)) {
-                const mem_addr = room_info["Memory_Address"] & 0xffff;
-                  if (address == mem_addr) {
-                    return room_name;
-                  }
-                }
-              return null;
-            }
       
             // Creates the leaflet map
             const base = {
