@@ -16,7 +16,7 @@ async function setupGameContainer(canvas) {
   );
   // Loading in Super Metroid Save State created from exporting withing the webpage
   let stateBytes = await loadBinary(
-    "https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/morphball.state?v=1729818175820"
+    "https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/missles.state?v=1731035018526"
   );
 
   let emulator = emulateSnesConsole(romBytes, stateBytes, canvas);
@@ -151,8 +151,6 @@ export class Toolkit {
         return dv.getUint8(offset);
 
       case "get_player_current_room":
-// player.current_room = [get_samus_room(dv.getUint16(0x79B, true), Object.entries(all_rooms)), map_area_names[dv.getUint8(0x079F)]];
-
         return "Player is at " + [get_samus_room(dv.getUint16(0x79B, true), all_rooms), map_area_names[dv.getUint8(0x079F)]];
 
       case "get_player_status":

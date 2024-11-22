@@ -188,6 +188,7 @@
         console.log({ name, args });
         switch (name) {                  
           case "ram_read_uint8":
+            console.log("Argument: " + args);
             const [bank, offset] = args.address.split(':').map(hex => parseInt(hex, 16));
             console.assert(bank == 0x7E)
             console.log(dv.getUint8(offset));
