@@ -21,6 +21,15 @@ export const map_area_offsets = {
   7: [0, 0],
 };
 
+export const crateria2_offset = [7, 0];
+export const crateria2_rooms = [
+  "East_Ocean",
+  "Forgotten_Highway",
+  "Crab_Maze",
+  "Crateria_Power_Door",
+  "Crateria_Maridia_Shaft",
+];
+
 function abstractify_pos(dv) {  
   const x_radius = dv.getInt16(0x0afe, true);
   const y_radius = dv.getInt16(0x0b00, true);
