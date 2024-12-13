@@ -40,7 +40,7 @@ function abstractify_pos(dv) {
   return [left, top];
 }
 
-function abstractify_pos_global(dv, map_area_offsets) {
+export function abstractify_pos_global(dv, map_area_offsets) {
   // Area pos
   const area_index = dv.getUint8(0x079F);
   const aoffset = map_area_offsets[area_index];
