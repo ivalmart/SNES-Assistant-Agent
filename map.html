@@ -56,11 +56,11 @@
 
       window.onload = async function () {
         // Loading in Super Metroid ROM
-        let romBytes = await loadBinary("https://cdn.glitch.global/8f3c9c45-eede-41a4-b155-79a85d16d588/Tetris%20%26%20Dr.%20Mario.sfc?v=1745012141287");
-        // let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
+        // let romBytes = await loadBinary("https://cdn.glitch.global/8f3c9c45-eede-41a4-b155-79a85d16d588/Tetris%20%26%20Dr.%20Mario.sfc?v=1745012141287");
+        let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
         // Loading in Super Metroid Save State created from exporting withing the webpage
-        // let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/morphball.state?v=1729818175820")
-        let stateBytes = false;
+        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/morphball.state?v=1729818175820")
+        // let stateBytes = false;
         
         let emulator = emulateSnesConsole(
           romBytes,
