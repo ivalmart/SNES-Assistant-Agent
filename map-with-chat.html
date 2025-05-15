@@ -40,6 +40,14 @@
         padding: 5px;
         display: flex;
       }
+      video {
+        width: 384px;
+        border: thick solid white;
+      }
+      canvas {
+        width: 384px;
+        border: thick solid gold;
+      }
 
       .col1,
       .col2 {
@@ -320,8 +328,9 @@
         // Loading in Super Metroid ROM
         let romBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/super_metriod.sfc?v=1729279786153");
         // Loading in Super Metroid Save State created from exporting withing the webpage
-        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/missles.state?v=1731035018526")
-
+        // let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/missles.state?v=1731035018526")
+        let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/ship.state?v=1729494763445");
+        
         let emulator = emulateSnesConsole(
           romBytes,
           stateBytes,
