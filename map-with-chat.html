@@ -326,10 +326,10 @@
           });
 
         // Loading in Super Metroid ROM
-        let romBytes = await loadBinary("../assets/Super_Metroid.sfc");
+        let romBytes = await loadBinary("assets/Super_Metroid.sfc");
         // Loading in Super Metroid Save State created from exporting withing the webpage
         // let stateBytes = await loadBinary("https://cdn.glitch.global/0d099dad-c80e-470b-aef1-a82edef5ee24/missles.state?v=1731035018526")
-        let stateBytes = await loadBinary("../assets/sm_ship.state");
+        let stateBytes = await loadBinary("assets/sm_ship.state");
         
         let emulator = emulateSnesConsole(
           romBytes,
