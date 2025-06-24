@@ -44,7 +44,7 @@
     <script type="module">
       // Super Nintendo emulator import + Map Node Tools import
       import { emulateSnesConsole } from "./snes.mjs";
-      import { abstractify_pos_global, map_area_offsets } from "./map_tools.mjs";
+      import { abstractify_pos_global, map_area_offsets } from "../map_tools.mjs";
 
       // In game-coordinates for Samus
       let player = {x: 258, y: 562, marker: null};
@@ -96,11 +96,11 @@
           context.fillText("game state 0x" + g.toString(16), 8, 16);
           // TODO: needs to also include other gamestates (such as actual gameplay)
           // if (g == 0x2a) {
-            let x = dv.getUint8(0x0b04);
-            let y = dv.getUint8(0x0b06);
-            context.strokeRect(x - 32, y - 32, 64, 64);
-            var coords = abstractify_pos_global(dv, map_area_offsets);
-            player.x = coords[0], player.y = coords[1];
+          let x = dv.getUint8(0x0b04);
+          let y = dv.getUint8(0x0b06);
+          context.strokeRect(x - 32, y - 32, 64, 64);
+          var coords = abstractify_pos_global(dv, map_area_offsets);
+          player.x = coords[0], player.y = coords[1];
           // }
         }
 
@@ -167,8 +167,8 @@
       
       
       // ------- Code for Super Metroid Map w/ Node-Rooms -------
-      import all_rooms from "./all_rooms.json" with { type: "json" };
-      import all_nodes from "./all_nodes.json" with { type: "json" };
+      import all_rooms from "../all_rooms.json" with { type: "json" };
+      import all_nodes from "../all_nodes.json" with { type: "json" };
 
       // Creates the leaflet map
       const base = {
